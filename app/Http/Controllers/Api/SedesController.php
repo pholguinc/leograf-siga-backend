@@ -3,63 +3,41 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Sedes\SedesStoreRequest;
+use App\Http\Requests\Sedes\SedesUpdateRequest;
 use App\Http\Resources\SedesResource;
 use App\Models\Sedes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Response;
+use Throwable;
 
 class SedesController extends Controller
 {
-    public function store(Request $request)
+    public function store(SedesStoreRequest $request)
     {
 
         try {
             DB::beginTransaction();
 
-            $validator = Validator::make($request->all(), [
-                'nombre' => [
-                    'required',
-                    'string',
-                    'max:255',
-                    Rule::unique('sedes')->where(function ($query) use ($request) {
-                        return $query->where('nombre', $request->nombre);
-                    }),
-                ],
-                'estado' => 'required|boolean'
-            ]);
-            if ($validator->fails()) {
-                $data = [
-                    'message' => 'Hubo un error en las validaciones',
-                    'errors' => $validator->errors(),
-                    'status' => 400
-                ];
+            $sedes = new Sedes();
+            $sedes->nombre = $request->nombre;
+            $sedes->estado = $request->estado;
+            $sedes->save(); 
 
-                return response()->json($data, 400);
-            }
+            DB::commit();
 
-            $sedes = DB::table('sedes')->insert([
-                'nombre' => $request->nombre,
-                'estado' => $request->estado,
-            ]);
+            $messages = [
+                'message' => 'Registro exitoso',
+                'status' => 200
+            ];
 
-            if ($sedes) {
-                DB::commit();
 
-                $data = [
-                    'message' => 'Registro exitoso',
-                    'status' => 200
-                ];
-                return response()->json($data, 200);
-            } else {
-                $data = [
-                    'message' => 'Hubo un problema al intentar registrar',
-                    'status' => 500
-                ];
-                return response()->json($data, 500);
-            }
-        } catch (\Throwable $e) {
+
+            return response()->json($messages);
+
+            
+        } catch (Throwable $e) {
             throw $e;
         }
     }
@@ -105,9 +83,9 @@ class SedesController extends Controller
 
             ];
 
-            return response()->json($data);
+            return Response::json($data, 200);
 
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             throw $e;
         }
     }
@@ -121,24 +99,28 @@ class SedesController extends Controller
                     'message' => 'Sede no encontrada',
                     'status' => 404,
                 ];
-                return response()->json($data, 404);
+                return Response::json($data, 404);
             }
 
-            return response()->json($sede, 200);
-        } catch (\Throwable $e) {
+            return Response::json($sede, 200);
+        } catch (Throwable $e) {
             throw $e;
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(SedesUpdateRequest $request, $id)
     {
         try {
             DB::beginTransaction();
 
-            $sedes = Sedes::find($id);
+            $sedes = Sedes::find($id)->first();
 
             if (!$sedes) {
-                return $this->responseErrorJson('El registro no fue encontrado');
+                $data = [
+                    'message' => 'Sede no encontrada',
+                    'status' => 404,
+                ];
+                return Response::json($data, 404);
             }
 
             $updateData = [];
@@ -157,11 +139,13 @@ class SedesController extends Controller
 
             DB::commit();
             // Devolvemos con mensaje
-            return response()->json([
+            $data = [
                 'message' => 'Registro actualizado con éxito',
                 'data' => $data
-            ]);
-        } catch (\Throwable $e) {
+            ];
+
+            return Response::json($data, 200);
+        } catch (Throwable $e) {
             DB::rollBack();
             throw $e;
         }
@@ -173,19 +157,22 @@ class SedesController extends Controller
             $sede = Sedes::where('id', $id)->first();
 
             if (!$sede) {
-                return $this->responseErrorJson('El registro no fue encontrado');
+                $data = [
+                    'message' => 'Sede no encontrada',
+                    'status' => 404,
+                ];
+                return Response::json($data, 404);
             }
 
             // Cambiar el estado entre true y false
             $sede->update(['estado' => !$sede->estado]);
 
             $data = [
-                'message' => 'El estado se actualizó con éxito',
+                'message' => 'Sede Eliminada correctamente',
                 'status' => 200,
-                'data' => $sede
             ];
-            return response()->json($data, 200);
-        } catch (\Throwable $e) {
+            return Response::json($data, 200);
+        } catch (Throwable $e) {
             throw $e;
         }
     }

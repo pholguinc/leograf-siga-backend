@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\ModulosController;
+use App\Http\Controllers\Api\RolController;
 use App\Http\Controllers\Api\SedesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,11 +23,42 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 /*Endpoints de Sedes */
 
-Route::post('/sedes', [SedesController::class, 'store']);
-Route::get('/sedes', [SedesController::class,'index']);
-Route::get('/sedes/{id}', [SedesController::class, 'show']);
-Route::put('/sedes/{id}', [SedesController::class, 'update']);
-Route::put('/sedes/{id}', [SedesController::class, 'delete']);
-
+Route::controller((SedesController::class))->prefix('sedes')->name('sede.')->group(function () {
+    Route::get('/', 'index')->name('listar');
+    Route::post('/','store')->name('crear');
+    Route::get('/{id}', 'show')->name('ver');
+    Route::put('/{id}', 'update')->name('editar');
+    Route::delete('/{id}', 'delete')->name('eliminar');
+});
 
 /*Endpoints de Sedes */
+
+
+/*Endpoints de Roles */
+
+Route::controller((RolController::class))->prefix('rol')->name('rol.')->group(function () {
+    Route::get('/', 'index')->name('listar');
+    Route::post('/', 'store')->name('crear');
+    Route::get('/{id}', 'show')->name('ver');
+    Route::put('/{id}', 'update')->name('editar');
+    Route::delete('/{id}', 'delete')->name('eliminar');
+});
+
+
+// /*Endpoints de Sedes */
+
+
+// /*Endpoints de Modulos */
+
+Route::controller((ModulosController::class))->prefix('modulo')->name('modulo.')->group(function () {
+    Route::get('/', 'index')->name('listar');
+    Route::post('/', 'store')->name('crear');
+    Route::get('/{id}', 'show')->name('ver');
+    Route::put('/{id}', 'update')->name('editar');
+    Route::delete('/{id}', 'delete')->name('eliminar');
+
+  
+});
+
+
+/*Endpoints de Modulos */
