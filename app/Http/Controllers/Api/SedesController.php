@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Sedes\SedesListarRequest;
 use App\Http\Requests\Sedes\SedesStoreRequest;
 use App\Http\Requests\Sedes\SedesUpdateRequest;
 use App\Http\Resources\SedesResource;
@@ -21,41 +22,28 @@ class SedesController extends Controller
     public function index(Request $request)
     {
         try {
+            $offset = $request->input('offset', 0);
+            $limit = $request->input('limit', 10);
+            $nombreSede = $request->input('nombre');
+            $estadoSede = $request->input('estado');
 
-            $query = DB::table('sedes');
-
-            // Filtrar por el parámetro nombre
-            if ($request->filled('nombre')) {
-                $nombre = $request->input('nombre');
-                $query->where('nombre', 'like', '%' . $nombre . '%');
-            }
-
-            // Filtrar por el parámetro estado
-            if ($request->filled('estado')) {
-                $estado = $request->input('estado');
-
-
-                if ($estado == 'true') {
-                    $query->where('estado', true);
-                } elseif ($estado == 'false') {
-                    $query->where('estado', false);
-                }
-            }
-            $per_page   = $request->input('per_page', 10);
-            $data       = $query->paginate($per_page);
-            $aux = SedesResource::collection($data);
+            $query = DB::select('SELECT * FROM listar_sedes_grid_list(:offset, :limit, :nombre, :estado);', [
+                'offset' => $offset,
+                'limit' => $limit,
+                'nombre' => $nombreSede,
+                'estado' => $estadoSede
+            ]);
 
             $data = [
-                'data' => $aux,
+                'data' => $query,
                 'pagination' => [
-                    'total' => $aux->total(),
-                    'current_page' => $aux->currentPage(),
-                    'per_page' => $aux->perPage(),
-                    'last_page' => $aux->lastPage(),
-                    'from' => $aux->firstItem(),
-                    'to' => $aux->lastItem()
+                    'total' => count($query),
+                    'current_page' => (int) $offset / $limit + 1,
+                    'per_page' => $limit,
+                    'last_page' => (int) ceil(count($query) / $limit),
+                    'from' => $offset + 1,
+                    'to' => min($offset + $limit, count($query)),
                 ]
-
             ];
 
             return $this->responseJson($data);
@@ -87,17 +75,17 @@ class SedesController extends Controller
 
     public function show($id)
     {
+
+
         try {
-            $sede = Sedes::where('id', $id)->first();
+            $query = DB::select('SELECT * FROM listar_sedes_por_id_list(:id)', [':id' => $id]);
 
-            if (!$sede) {
-
+            if (empty($query)) {
                 return $this->responseErrorJson('El registro no fue encontrado');
             }
 
-            $data = new SedesResource($sede);
 
-            return $this->responseJson($data);
+            return $this->responseJson($query);
         } catch (Throwable $e) {
             throw $e;
         }
@@ -131,7 +119,6 @@ class SedesController extends Controller
             DB::commit();
             // Devolvemos con mensaje
             return $this->responseJson($data);
-
         } catch (Throwable $e) {
             DB::rollBack();
             throw $e;
@@ -141,20 +128,14 @@ class SedesController extends Controller
     public function delete($id)
     {
         try {
-            $sede = Sedes::where('id', $id)->first();
+            $query = DB::select('SELECT * FROM cambiar_Estado_sedes(:id)', [':id' => $id]);
 
-            if (!$sede) {
+            if (empty($query)) {
                 return $this->responseErrorJson('El registro no fue encontrado');
             }
 
-            // Cambiar el estado entre true y false
-            $sede->update(['estado' => !$sede->estado]);
 
-            $data = [
-                'message' => 'Sede Eliminada correctamente',
-                'status' => 200,
-            ];
-            return $this->noContent();
+            return $this->responseJson($query);
         } catch (Throwable $e) {
             throw $e;
         }

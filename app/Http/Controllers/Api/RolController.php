@@ -15,46 +15,30 @@ use Throwable;
 class RolController extends Controller
 {
     public function index(Request $request){
-        $query = DB::table('rol');
 
-        // Filtrar por el parámetro rol
-        if ($request->filled('rol')) {
-            $rol = $request->input('rol');
-            $query->where('rol', 'like', '%' . $rol . '%');
-        }
+        $offset = $request->input('offset', 0);
+        $limit = $request->input('limit', 10);
+        $nombreMenu = $request->input('nombre');
+        $estadoMenu = $request->input('estado'); 
+        
+        $query = DB::select('SELECT * FROM listar_menus_grid_list(:offset, :limit, :nombre, :estado);', [
+            'offset' => $offset,
+            'limit' => $limit,
+            'nombre' => $nombreMenu,
+            'estado' => $estadoMenu
+        ]);
 
-        if ($request->filled('codigo')) {
-            $codigo = $request->input('codigo');
-            $query->where('codigo', 'like', '%' . $codigo . '%');
-        }
-
-        // Filtrar por el parámetro estado
-        if ($request->filled('estado')) {
-            $estado = $request->input('estado');
-
-
-            if ($estado == 'true') {
-                $query->where('estado', true);
-            } elseif ($estado == 'false') {
-                $query->where('estado', false);
-            }
-        }
-
-        $per_page   = $request->input('per_page', 10);
-        $data       = $query->paginate($per_page);
-        $aux = RolesResource::collection($data);
 
         $data = [
-            'data' => $aux,
+            'data' => $query,  
             'pagination' => [
-                'total' => $aux->total(),
-                'current_page' => $aux->currentPage(),
-                'per_page' => $aux->perPage(),
-                'last_page' => $aux->lastPage(),
-                'from' => $aux->firstItem(),
-                'to' => $aux->lastItem()
+                'total' => count($query), 
+                'current_page' => (int) $offset / $limit + 1, 
+                'per_page' => $limit,
+                'last_page' => (int) ceil(count($query) / $limit), 
+                'from' => $offset + 1, 
+                'to' => min($offset + $limit, count($query)), 
             ]
-
         ];
 
         return response()->json($data);
@@ -155,35 +139,15 @@ class RolController extends Controller
 
     public function delete($id)
     {
-      
         try {
+            $query = DB::select('SELECT * FROM cambiar_estado_roles(:id)', [':id' => $id]);
 
-            $roles = Rol::find($id);
-
-            if (!$roles) {
-                $data = [
-                    'message' => 'Registro no encontrada',
-                    'status' => 404,
-                ];
-                return response()->json($data);
+            if (empty($query)) {
+                return $this->responseErrorJson('El registro no fue encontrado');
             }
 
-            $statusRol = $roles->estado;
 
-            if ($statusRol === 0) {
-                $data = [
-                    'message' => 'No exite',
-                    'status' => 404
-                ];
-                return response()->json($data);
-            }
-            // TODO: Tu estatus por defecto es 1
-            $roles->update(['estado' => 0]);
-            $messages = [
-                'message' => 'Rol Eliminada correctamente',
-                'status' => 200,
-            ];
-            return response()->json($messages);
+            return $this->responseJson($query);
         } catch (Throwable $e) {
             throw $e;
         }

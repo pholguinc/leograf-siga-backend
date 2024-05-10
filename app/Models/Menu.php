@@ -10,9 +10,14 @@ class Menu extends Model
     use HasFactory;
 
     public $timestamps = false;
+    public $table = 'menus';
+    public $primaryKey = 'id_menu';
+    public $incrementing = true;
+
     protected $fillable = [
-        'id',
+        'id_menu',
         'codigo',
+        'id_modulo',
         'nombre',
         'estado',
         'fecha_creacion',
@@ -20,4 +25,6 @@ class Menu extends Model
         'fecha_modificacion',
         'usuario_modificacion'
     ];
+
+
 }

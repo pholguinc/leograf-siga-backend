@@ -7,6 +7,7 @@ use App\Http\Requests\Modulos\ModulosStoreRequest;
 use App\Http\Requests\Modulos\ModulosUpdateRequest;
 use App\Http\Resources\ModulosResource;
 use App\Models\Modulos;
+use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Throwable;
@@ -14,49 +15,32 @@ use Throwable;
 class ModulosController extends Controller
 {
 
+    use ResponseTrait;
     public function index(Request $request)
     {
         try {
+            $offset = $request->input('offset', 0);
+            $limit = $request->input('limit', 10);
+            $nombreSede = $request->input('nombre');
+            $estadoSede = $request->input('estado');
 
-            $query = DB::table('modulos');
-
-            // Filtrar por el parámetro nombre
-            if ($request->filled('nombre')) {
-                $nombre = $request->input('nombre');
-                $query->where('nombre', 'like', '%' . $nombre . '%');
-            }
-
-            if ($request->filled('codigo')) {
-                $codigo = $request->input('codigo');
-                $query->where('codigo', 'like', '%' . $codigo . '%');
-            }
-
-            // Filtrar por el parámetro estado
-            if ($request->filled('estado')) {
-                $estado = $request->input('estado');
-
-
-                if ($estado == 'true') {
-                    $query->where('estado', true);
-                } elseif ($estado == 'false') {
-                    $query->where('estado', false);
-                }
-            }
-            $per_page   = $request->input('per_page', 10);
-            $data       = $query->paginate($per_page);
-            $aux = ModulosResource::collection($data);
+            $query = DB::select('SELECT * FROM listar_modulos_grid_list(:offset, :limit, :nombre, :estado);', [
+                'offset' => $offset,
+                'limit' => $limit,
+                'nombre' => $nombreSede,
+                'estado' => $estadoSede
+            ]);
 
             $data = [
-                'data' => $aux,
+                'data' => $query,
                 'pagination' => [
-                    'total' => $aux->total(),
-                    'current_page' => $aux->currentPage(),
-                    'per_page' => $aux->perPage(),
-                    'last_page' => $aux->lastPage(),
-                    'from' => $aux->firstItem(),
-                    'to' => $aux->lastItem()
+                    'total' => count($query),
+                    'current_page' => (int) $offset / $limit + 1,
+                    'per_page' => $limit,
+                    'last_page' => (int) ceil(count($query) / $limit),
+                    'from' => $offset + 1,
+                    'to' => min($offset + $limit, count($query)),
                 ]
-
             ];
 
             return response()->json($data);
@@ -79,7 +63,7 @@ class ModulosController extends Controller
 
             $modulo->save();
 
-            $modulo->codigo = $codigoPrefix . $modulo->id;
+            $modulo->codigo = $codigoPrefix . $modulo->id_modulo;
             $modulo->save();
 
 
@@ -90,8 +74,6 @@ class ModulosController extends Controller
                 'status' => 200
             ];
 
-
-
             return response()->json($messages);
         } catch (Throwable $e) {
             throw $e;
@@ -100,28 +82,20 @@ class ModulosController extends Controller
 
     public function show($id)
     {
-        try {
-            $modulo = Modulos::where('id', $id)->first();
 
-            if (!$modulo) {
-                $data = [
-                    'message' => 'rEGISTRO no encontrada',
-                    'status' => 404,
-                ];
-                return response()->json($data);
+        try {
+            $query = DB::select('SELECT * FROM listar_modulos_por_id_list(:id)', [':id' => $id]);
+
+            if (empty($query)) {
+                return $this->responseErrorJson('El registro no fue encontrado');
             }
 
-            $messages = [
-                'message' => $modulo,
-                'status' => 200
-            ];
 
-            return response()->json($messages);
+            return $this->responseJson($query);
         } catch (Throwable $e) {
             throw $e;
         }
     }
-
 
     public function update(ModulosUpdateRequest $request, $id)
     {
@@ -160,35 +134,15 @@ class ModulosController extends Controller
 
     public function delete($id)
     {
-
         try {
+            $query = DB::select('SELECT * FROM cambiar_estado_modulos(:id)', [':id' => $id]);
 
-            $modulo = Modulos::find($id);
-
-            if (!$modulo) {
-                $data = [
-                    'message' => 'Registro no encontrada',
-                    'status' => 404,
-                ];
-                return response()->json($data);
+            if (empty($query)) {
+                return $this->responseErrorJson('El registro no fue encontrado');
             }
 
-            $statusRol = $modulo->estado;
 
-            if ($statusRol === 0) {
-                $data = [
-                    'message' => 'No exite',
-                    'status' => 404
-                ];
-                return response()->json($data);
-            }
-            // TODO: Tu estatus por defecto es 1
-            $modulo->update(['estado' => 0]);
-            $messages = [
-                'message' => 'Modulo Eliminada correctamente',
-                'status' => 200,
-            ];
-            return response()->json($messages);
+            return $this->responseJson($query);
         } catch (Throwable $e) {
             throw $e;
         }

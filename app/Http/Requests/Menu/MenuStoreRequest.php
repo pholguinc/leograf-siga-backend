@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Menu;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class MenuStoreRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class MenuStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +24,36 @@ class MenuStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nombre'            => 'required|min:3|unique:menu',
+            'id_modulo'        => 'required',
+            'estado'                => 'required'
         ];
+    }
+
+
+    public function messages()
+    {
+        return [
+            'nombre.required'           => 'Ingrese un nombre valido.',
+            'id_modulo.required'    => 'El id del módulo es requerido',
+            'nombre.min'                => 'Ingrese un nombre que contenga más de 3 caracteres.',
+            'nombre.unique'             => "El nombre ya se encuentra registrado.",
+            'estado.required'     =>       'El estado es requerido.'
+        ];
+    }
+
+
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(
+            response()->json(
+                [
+                    'success' => false,
+                    'message' => 'Validar Errores',
+                    'errors' => $validator->errors()
+                ],
+                400
+            )
+        );
     }
 }

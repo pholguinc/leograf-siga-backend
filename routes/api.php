@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\MenuController;
 use App\Http\Controllers\Api\ModulosController;
 use App\Http\Controllers\Api\RolController;
 use App\Http\Controllers\Api\SedesController;
@@ -60,5 +61,17 @@ Route::controller((ModulosController::class))->prefix('modulo')->name('modulo.')
   
 });
 
-
 /*Endpoints de Modulos */
+
+
+// /*Endpoints de Menus */
+
+Route::controller((MenuController::class))->prefix('menus')->name('menus.')->group(function () {
+    Route::get('/', 'index')->name('listar');
+    Route::post('/', 'store')->name('crear');
+    Route::get('/{id}', 'show')->name('ver');
+    Route::put('/{id}', 'update')->name('editar');
+    Route::delete('/{id}', 'delete')->name('eliminar');
+});
+
+/*Endpoints de Menus */

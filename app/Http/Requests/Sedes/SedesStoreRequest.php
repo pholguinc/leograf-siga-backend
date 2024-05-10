@@ -4,6 +4,7 @@ namespace App\Http\Requests\Sedes;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Client\Request;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 class SedesStoreRequest extends FormRequest
@@ -27,6 +28,8 @@ class SedesStoreRequest extends FormRequest
             'nombre'            => 'required|min:3|unique:sedes',
             'estado'                => 'required' 
         ];
+        
+
     }
 
 

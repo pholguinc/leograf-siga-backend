@@ -10,8 +10,12 @@ class Modulos extends Model
     use HasFactory;
 
     public $timestamps = false;
+
+    protected $table = 'modulos';
+    protected $primaryKey = 'id_modulo';
+    public $incrementing = true;
     protected $fillable = [
-        'id',
+        'id_modulo',
         'codigo',
         'nombre',
         'estado',
@@ -20,4 +24,12 @@ class Modulos extends Model
         'fecha_modificacion',
         'usuario_modificacion'
     ];
+
+
+    public function setUpdatedAt($value)
+    {
+        if ($this->isDirty()) {
+            parent::setUpdatedAt($value);
+        }
+    }
 }
