@@ -52,22 +52,22 @@ class SedesController extends Controller
         }
     }
 
-    public function store(SedesStoreRequest $request)
+    public function store(Request $request)
     {
 
         try {
-            DB::beginTransaction();
 
-            $sedes = new Sedes();
-            $sedes->nombre = $request->nombre;
-            $sedes->estado = $request->estado;
-            $sedes->save();
+            $idSede = $request->input('id');
+            $nombreSede = $request->input('nombre');
+            
+            $query = DB::select('SELECT * FROM add_upd_sedes_list(:id_sede,:nombre);', [
+                'id_sede' => $idSede,
+                'nombre' => $nombreSede,
+              
+            ]);
 
-            DB::commit();
+            return $this->responseJson($query);
 
-            $data = new SedesResource($sedes);
-
-            return $this->responseJson($data);
         } catch (Throwable $e) {
             throw $e;
         }
@@ -117,7 +117,6 @@ class SedesController extends Controller
             $data = new SedesResource($sedes);
 
             DB::commit();
-            // Devolvemos con mensaje
             return $this->responseJson($data);
         } catch (Throwable $e) {
             DB::rollBack();
