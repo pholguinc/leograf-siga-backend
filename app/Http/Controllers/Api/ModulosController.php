@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Modulos\ModulosStoreRequest;
 use App\Http\Requests\Modulos\ModulosUpdateRequest;
 use App\Http\Resources\ModulosResource;
+use App\Models\Modulo;
 use App\Models\Modulos;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PDO;
 use Throwable;
 
 class ModulosController extends Controller
@@ -48,34 +50,39 @@ class ModulosController extends Controller
             throw $e;
         }
     }
-    public function store(ModulosStoreRequest $request)
+    public function store(Request $request)
     {
-
         try {
             DB::beginTransaction();
 
-            $modulo = new Modulos();
-            $modulo->nombre = $request->nombre;
-            $modulo->estado = $request->estado;
+            $codigoPrefix = 'MO';
+            $nombreModulo = $request->input('nombre_modulo');
+            $image_url = $request->input('image_url');
+            $statement = DB::connection()->getPdo()->prepare('SELECT last_value FROM modulos_id_seq');
+            $statement->execute();
+            $idModulo = $statement->fetchColumn();
 
-            $codigoPrefix = '000';
-            $modulo->codigo = $codigoPrefix;
+            $codigoModulo = $codigoPrefix . $idModulo;
 
-            $modulo->save();
 
-            $modulo->codigo = $codigoPrefix . $modulo->id_modulo;
-            $modulo->save();
+            $query = DB::connection()->getPdo()->prepare('SELECT * FROM modulos_list_create(:id_modulo,:codigo,:nombre,:alias, :image_url)');
+            $query->bindParam(':id_modulo', $idModulo);
+            $query->bindParam(':nombre', $nombreModulo);
+            $query->bindParam(':codigo', $codigoModulo);
+            $query->bindParam(':alias', $codigoPrefix);
+            $query->bindParam(':image_url', $image_url);
 
+            $sede = new Modulo();
+
+            $query->execute();
+            $moduloData = $query->fetch(PDO::FETCH_ASSOC);
 
             DB::commit();
 
-            $messages = [
-                'message' => 'Registro exitoso',
-                'status' => 200
-            ];
 
-            return response()->json($messages);
+            return $this->responseJson($moduloData);
         } catch (Throwable $e) {
+            DB::rollBack();
             throw $e;
         }
     }
@@ -97,40 +104,31 @@ class ModulosController extends Controller
         }
     }
 
-    public function update(ModulosUpdateRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        
         try {
             DB::beginTransaction();
 
-            $modulo = Modulos::find($id);
+            $modulos = Modulo::find($id)->first();
 
-            if (!$modulo) {
-                $data = [
-                    'message' => 'Registro no encontrada',
-                    'status' => 404,
-                ];
-                return response()->json($data);
+            if (!$modulos) {
+                return $this->responseErrorJson('El registro no fue encontrado');
             }
 
-            $modulo->update([
-                'nombre' => $request->nombre,
-                'estado' => $request->estado
+            $query = DB::select('SELECT modulos_list_update(:id_modulo, :nombre_modulo, :image_url)', [
+                ':id_modulo' => $id,
+                ':nombre_modulo' => $request->input('nombre_modulo'),
+                ':image_url' => $request->input('image_url'),
             ]);
 
-            $messages = [
-                'message' => 'Registro actualizado',
-                'status' => 200,
-            ];
-
             DB::commit();
-
-            return response()->json($messages);
+            return $this->responseJson($query);
         } catch (Throwable $e) {
             DB::rollBack();
             throw $e;
         }
     }
+
 
     public function delete($id)
     {

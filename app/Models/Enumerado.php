@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Menu extends Model
+class Enumerado extends Model
 {
     use HasFactory;
     public $timestamps = [
@@ -14,13 +14,4 @@ class Menu extends Model
     ];
 
 
-    //Relación uno a  muchos inversa
-    public function submenu(){
-        return $this->belongsTo(Submenu::class);
-    }
-
-    public function modulo()
-    {
-        return $this->belongsTo(Modulo::class);
-    }
 }

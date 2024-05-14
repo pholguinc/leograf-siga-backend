@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Menu extends Model
+class Modulo extends Model
 {
     use HasFactory;
     public $timestamps = [
@@ -13,14 +13,9 @@ class Menu extends Model
         'updated_at' => false,
     ];
 
-
-    //Relación uno a  muchos inversa
-    public function submenu(){
-        return $this->belongsTo(Submenu::class);
-    }
-
-    public function modulo()
+    //Relación uno a muchos
+    public function menus()
     {
-        return $this->belongsTo(Modulo::class);
+        return $this->hasMany(Menu::class);
     }
 }

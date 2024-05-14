@@ -9,41 +9,52 @@ use App\Models\Menu;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PDO;
 use Throwable;
 
 class MenuController extends Controller
 {
     use ResponseTrait;
-    public function store(MenuStoreRequest $request)
+    public function store(Request $request)
     {
-
-        echo $request->nombre . $request->id_modulo;
-        return;
         try {
             DB::beginTransaction();
+            
+            $codigoPrefix = 'ME0';
+            $nombreMenu = $request->input('nombre_menu');
+            $moduloId = $request->input('id_modulo');
+            $statement = DB::connection()->getPdo()->prepare('SELECT last_value FROM menus_id_seq');
+            $statement->execute();
+            $idMenu = $statement->fetchColumn();
 
-            $menus = new Menu();
-            $menus->nombre = $request->nombre;
-            $menus->id_modulo = $request->id_modulo;
-            // $menus->estado = $request->estado;
-
-            $codigoPrefix = '0001';
-
-            $menus->codigo = $codigoPrefix;
+            $moduloAliasQuery = DB::table('modulos')->where('id', $moduloId)->select('alias')->first();
+            $moduloAlias = $moduloAliasQuery ? $moduloAliasQuery->alias : ''; // Handle potential null value
 
 
-            $menus->save();
+            $codigoMenu = $moduloAlias . $moduloId. $codigoPrefix . $idMenu;
+
+
+            $query = DB::connection()->getPdo()->prepare('SELECT * FROM menus_list_create(:id_menu,:nombre,:codigo,:alias, :moduloId)');
+            $query->bindParam(':id_menu', $idMenu);
+            $query->bindParam(':nombre', $nombreMenu);
+            $query->bindParam(':codigo', $codigoMenu);
+            $query->bindParam(':alias', $codigoPrefix);
+            $query->bindParam(':moduloId', $moduloId);
+
+            $sede = new Menu();
+
+            $query->execute();
+            $sedeData = $query->fetch(PDO::FETCH_ASSOC);
 
             DB::commit();
 
-            $data = new MenuResource($menus);
 
-            return $this->responseJson($data);
+            return $this->responseJson($sedeData);
         } catch (Throwable $e) {
+            DB::rollBack();
             throw $e;
         }
     }
-
     public function index(Request $request)
     {
         $offset = $request->input('offset', 0);

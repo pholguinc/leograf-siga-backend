@@ -15,8 +15,7 @@ class SedesResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'=> $this->id_sede,
-            'nombre' => $this->nombre,
+            'nombre_sede' => $this->nombre_sede,
             'estado' => $this->estado
         ];
     }

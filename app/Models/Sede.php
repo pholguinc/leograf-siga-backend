@@ -4,15 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Permission\Models\Role;
 
-class Rol extends Role
+class Sede extends Model
 {
     use HasFactory;
 
     public $timestamps = [
-        'created_at' => 'Y-m-d H:i:s',
+        'created_at' => 'Y-m-d H:i:s', 
         'updated_at' => false,
     ];
-    
 }

@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\MenuController;
 use App\Http\Controllers\Api\ModulosController;
 use App\Http\Controllers\Api\RolController;
 use App\Http\Controllers\Api\SedesController;
+use App\Http\Controllers\Api\UsuariosController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -75,3 +76,17 @@ Route::controller((MenuController::class))->prefix('menus')->name('menus.')->gro
 });
 
 /*Endpoints de Menus */
+
+
+// /*Endpoints de Usuarios */
+
+Route::controller((UsuariosController::class))->prefix('usuarios')->name('usuarios.')->group(function () {
+    Route::get('/', 'index')->name('listar');
+    Route::post('/', 'store')->name('crear');
+    Route::get('/{id}', 'show')->name('ver');
+    Route::put('/{id}', 'update')->name('editar');
+    Route::delete('/{id}', 'delete')->name('eliminar');
+});
+
+/*Endpoints de Usuarios */
+
