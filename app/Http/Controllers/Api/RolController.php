@@ -17,35 +17,38 @@ use Throwable;
 class RolController extends Controller
 {
     use ResponseTrait;
-    public function index(Request $request){
+    public function index(Request $request)
+    {
+        try {
+            $offset = $request->input('offset', 0);
+            $limit = $request->input('limit', 10);
+            $nombreRol = $request->input('rol_nombre');
+            $estadoRol = $request->input('estado');
 
-        $offset = $request->input('offset', 0);
-        $limit = $request->input('limit', 10);
-        $nombreMenu = $request->input('nombre');
-        $estadoMenu = $request->input('estado'); 
-        
-        $query = DB::select('SELECT * FROM listar_menus_grid_list(:offset, :limit, :nombre, :estado);', [
-            'offset' => $offset,
-            'limit' => $limit,
-            'nombre' => $nombreMenu,
-            'estado' => $estadoMenu
-        ]);
+            $query = DB::select('SELECT * FROM listar_roles_grid_list(:offset, :limit, :rol_nombre, :estado);', [
+                'offset' => $offset,
+                'limit' => $limit,
+                'rol_nombre' => $nombreRol ? "%{$nombreRol}%" : null,
+                'estado' => $estadoRol
+            ]);
 
+            $data = [
+                'data' => $query,
+                'pagination' => [
+                    'total' => count($query),
+                    'current_page'
+                    => (int) ceil($offset / $limit),
+                    'per_page' => $limit,
+                    'last_page' => (int) ceil(count($query) / $limit),
+                    'from' => $offset + 1,
+                    'to' => min($offset + $limit, count($query)),
+                ]
+            ];
 
-        $data = [
-            'data' => $query,  
-            'pagination' => [
-                'total' => count($query), 
-                'current_page' => (int) $offset / $limit + 1, 
-                'per_page' => $limit,
-                'last_page' => (int) ceil(count($query) / $limit), 
-                'from' => $offset + 1, 
-                'to' => min($offset + $limit, count($query)), 
-            ]
-        ];
-
-        return response()->json($data);
-        
+            return $this->responseJson($data);
+        } catch (Throwable $e) {
+            throw $e;
+        }
     }
     public function store(Request $request)
     {
@@ -84,62 +87,46 @@ class RolController extends Controller
 
     public function show($id)
     {
-        try {
-            $sede = Rol::where('id', $id)->first();
 
-            if (!$sede) {
-                $data = [
-                    'message' => 'rEGISTRO no encontrada',
-                    'status' => 404,
-                ];
-                return response()->json($data);
+        try {
+            $query = DB::select('SELECT * FROM listar_roles_por_id_list(:id)', [':id' => $id]);
+
+            if (empty($query)) {
+                return $this->responseErrorJson('El registro no fue encontrado');
             }
 
-            $messages = [
-                'message' => $sede,
-                'status' => 200
-            ];
 
-            return response()->json($messages);
+            return $this->responseJson($query);
         } catch (Throwable $e) {
             throw $e;
         }
     }
 
-    public function update(RolUpdateRequest $request, $id)
+
+    public function update(Request $request, $id)
     {
         try {
             DB::beginTransaction();
 
-            $roles = Rol::find($id);
+            $roles = Rol::find($id)->first();
 
             if (!$roles) {
-                $data = [
-                    'message' => 'Registro no encontrada',
-                    'status' => 404,
-                ];
-                return response()->json($data);
+                return $this->responseErrorJson('El registro no fue encontrado');
             }
 
-            $roles->update([
-                'rol' => $request->rol,
-                'estado' => $request->estado
+            $query = DB::select('SELECT roles_list_update(:id_rol, :nombre_rol)', [
+                ':id_rol' => $id,
+                ':nombre_rol' => $request->input('nombre_rol'),
             ]);
 
-            $messages = [
-                'message' => 'Registro actualizado',
-                'status' => 200,
-            ];
-
             DB::commit();
-
-            return response()->json($messages);
-
+            return $this->responseJson($query);
         } catch (Throwable $e) {
             DB::rollBack();
             throw $e;
         }
     }
+
 
     public function delete($id)
     {
