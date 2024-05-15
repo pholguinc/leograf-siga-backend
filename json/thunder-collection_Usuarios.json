@@ -1,0 +1,35 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "Usuarios",
+    "collectionId": "54c6108c-9479-4df8-aa0d-e08aef069caf",
+    "dateExported": "2024-05-15T22:10:31.312Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "d18a4ab9-c2c7-4c5f-9076-0a765d839d26",
+            "colId": "54c6108c-9479-4df8-aa0d-e08aef069caf",
+            "containerId": "",
+            "name": "Listar Usuarios",
+            "url": "{{base_url}}/usuarios/2",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2024-05-13T21:26:23.354Z",
+            "modified": "2024-05-13T23:01:57.753Z",
+            "headers": []
+        },
+        {
+            "_id": "46ab24f1-307f-490c-857d-e9bfff2331b0",
+            "colId": "54c6108c-9479-4df8-aa0d-e08aef069caf",
+            "containerId": "",
+            "name": "Cambiar estado Usuario",
+            "url": "{{base_url}}/usuarios/2",
+            "method": "DELETE",
+            "sortNum": 20000,
+            "created": "2024-05-13T22:47:10.973Z",
+            "modified": "2024-05-13T23:03:02.066Z",
+            "headers": []
+        }
+    ],
+    "ref": "UiVAhNFSJ2T1LAraRHhJTCxWnkx3m0RBvi3apwf_JYL9R-bejIh90xjheiP2hYpDtUNrvPExhN02HRn_m_yluQ"
+}

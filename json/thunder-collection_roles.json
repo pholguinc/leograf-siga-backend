@@ -1,0 +1,94 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "roles",
+    "collectionId": "a968260e-18eb-4478-a99f-dd55957848f0",
+    "dateExported": "2024-05-15T22:10:09.088Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "b734eef4-edb1-40d4-916c-4636f39b917f",
+            "colId": "a968260e-18eb-4478-a99f-dd55957848f0",
+            "containerId": "",
+            "name": "Crear Rol",
+            "url": "{{base_url}}/rol",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-05-06T21:19:52.552Z",
+            "modified": "2024-05-15T21:48:00.038Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"nombre_rol\": \"rol nuevo2\",\n  \"estado\": true\n  \n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "51c29e10-ae48-4577-b35a-313f524b21e4",
+            "colId": "a968260e-18eb-4478-a99f-dd55957848f0",
+            "containerId": "",
+            "name": "Actulaizar Rol",
+            "url": "{{base_url}}/rol/4",
+            "method": "PUT",
+            "sortNum": 15000,
+            "created": "2024-05-07T20:52:23.742Z",
+            "modified": "2024-05-15T21:55:18.003Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"nombre_rol\": \"rol nuevo update\",\n  \"estado\": true\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "516b5b29-546d-4a30-931e-bde75bfafa98",
+            "colId": "a968260e-18eb-4478-a99f-dd55957848f0",
+            "containerId": "",
+            "name": "Busca rol por Id",
+            "url": "{{base_url}}/rol/4",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2024-05-07T15:13:24.016Z",
+            "modified": "2024-05-15T21:54:59.609Z",
+            "headers": []
+        },
+        {
+            "_id": "9920734c-35f2-4600-a681-54044079b2b3",
+            "colId": "a968260e-18eb-4478-a99f-dd55957848f0",
+            "containerId": "",
+            "name": "Eliminar rol",
+            "url": "{{base_url}}/rol/27",
+            "method": "DELETE",
+            "sortNum": 30000,
+            "created": "2024-05-07T21:43:24.690Z",
+            "modified": "2024-05-07T21:55:46.389Z",
+            "headers": []
+        },
+        {
+            "_id": "b94f3b73-14b2-4172-b94b-530be3a29fd0",
+            "colId": "a968260e-18eb-4478-a99f-dd55957848f0",
+            "containerId": "",
+            "name": "Listar roles",
+            "url": "{{base_url}}/rol?offset=10",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2024-05-07T22:30:42.020Z",
+            "modified": "2024-05-10T16:14:03.644Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "codigo",
+                    "value": "00026",
+                    "isDisabled": true,
+                    "isPath": false
+                },
+                {
+                    "name": "offset",
+                    "value": "10",
+                    "isPath": false
+                }
+            ]
+        }
+    ],
+    "ref": "du0wzrX_yUmj15-wLSYttQ04sAeEHmHgB5Qq3IWifVp8v0VkQ7X3wfAcuhgliIDkHg6PxV3GjG88G8hdxX7Hzg"
+}

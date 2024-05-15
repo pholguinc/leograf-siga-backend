@@ -1,0 +1,86 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "Menus",
+    "collectionId": "a0b50344-038c-41bf-9c38-522ab65a66d4",
+    "dateExported": "2024-05-15T22:10:19.761Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "e39bf540-ccce-431c-8542-0f7fbf673224",
+            "colId": "a0b50344-038c-41bf-9c38-522ab65a66d4",
+            "containerId": "",
+            "name": "Crear Menu",
+            "url": "{{base_url}}/menus",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2024-05-08T17:44:01.445Z",
+            "modified": "2024-05-14T20:53:50.766Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"nombre_menu\": \"menu2\",\n  \"id_modulo\": 1\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "63f4759a-27a3-4cfd-8d8f-dcc18c584bb2",
+            "colId": "a0b50344-038c-41bf-9c38-522ab65a66d4",
+            "containerId": "",
+            "name": "Listar menus",
+            "url": "{{base_url}}/menus",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2024-05-10T19:52:31.091Z",
+            "modified": "2024-05-15T20:42:58.083Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"offset\": 0,\n  \"limit\": 2,\n  \"nombre\": \"menu2\",\n  \"id_modulo\": 0,\n  \"estado\": true\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "604f8af1-6f42-4c26-8ea4-363a3881670e",
+            "colId": "a0b50344-038c-41bf-9c38-522ab65a66d4",
+            "containerId": "",
+            "name": "Actualizar Menu",
+            "url": "{{base_url}}/menus",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2024-05-14T21:26:24.230Z",
+            "modified": "2024-05-14T21:26:24.230Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"nombre_menu\": \"menu2\",\n  \"id_modulo\": 1\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "5c10dbd8-7ede-4443-b6a6-1cbacae1f29d",
+            "colId": "a0b50344-038c-41bf-9c38-522ab65a66d4",
+            "containerId": "",
+            "name": "Cambiar estado Menu",
+            "url": "{{base_url}}/menus/5",
+            "method": "DELETE",
+            "sortNum": 30000,
+            "created": "2024-05-14T21:33:49.752Z",
+            "modified": "2024-05-14T21:39:01.814Z",
+            "headers": []
+        },
+        {
+            "_id": "8d9d2a38-9bea-4ad3-9587-fc27cc8adc4e",
+            "colId": "a0b50344-038c-41bf-9c38-522ab65a66d4",
+            "containerId": "",
+            "name": "Listar menus por id",
+            "url": "{{base_url}}/menus/5",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2024-05-10T20:30:36.604Z",
+            "modified": "2024-05-14T21:32:41.198Z",
+            "headers": []
+        }
+    ],
+    "ref": "yhfUFFkrPK2ZkFLg07yKZ7l9Eeu1SWhPi_3mQpCCdAXxIUNady9HQoKdtG4P5K_kDXOgcl9Rn-WHUV5R-HeOTg"
+}

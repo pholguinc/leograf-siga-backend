@@ -1,0 +1,94 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "Modulos",
+    "collectionId": "0d8c5269-a530-46f7-bc25-c402cde8b68e",
+    "dateExported": "2024-05-15T22:10:15.225Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "73b5a426-0fe7-4517-803d-4249a87ade70",
+            "colId": "0d8c5269-a530-46f7-bc25-c402cde8b68e",
+            "containerId": "",
+            "name": "Crear Modulo",
+            "url": "{{base_url}}/modulo",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-05-07T23:08:08.828Z",
+            "modified": "2024-05-14T23:16:56.118Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"nombre_modulo\": \"modulo5\",\n  \"image_url\": \"imagen.png\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "c42ddc95-1edd-4f6b-bf9f-ebc7ebf2278a",
+            "colId": "0d8c5269-a530-46f7-bc25-c402cde8b68e",
+            "containerId": "",
+            "name": "Listar Modulo por Id",
+            "url": "{{base_url}}/modulo/1",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2024-05-07T23:13:05.513Z",
+            "modified": "2024-05-07T23:14:44.002Z",
+            "headers": []
+        },
+        {
+            "_id": "8acb7ec2-36ca-4244-8cdb-5805d72af26f",
+            "colId": "0d8c5269-a530-46f7-bc25-c402cde8b68e",
+            "containerId": "",
+            "name": "Actualiza módulo",
+            "url": "{{base_url}}/modulo/1",
+            "method": "PUT",
+            "sortNum": 20000,
+            "created": "2024-05-07T23:14:50.840Z",
+            "modified": "2024-05-14T23:07:09.436Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"nombre_modulo\": \"modulo4 UPDATED1\",\n  \"image_url\": \"imagen1.png\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "97ede9d7-dde9-4261-bf29-14a9bb6e59b6",
+            "colId": "0d8c5269-a530-46f7-bc25-c402cde8b68e",
+            "containerId": "",
+            "name": "Cambiar esto del Módulo",
+            "url": "{{base_url}}/modulo/1",
+            "method": "DELETE",
+            "sortNum": 30000,
+            "created": "2024-05-07T23:26:54.424Z",
+            "modified": "2024-05-10T23:11:42.558Z",
+            "headers": []
+        },
+        {
+            "_id": "c48988c5-d640-436c-8876-594b8734be75",
+            "colId": "0d8c5269-a530-46f7-bc25-c402cde8b68e",
+            "containerId": "",
+            "name": "Listar Modulos",
+            "url": "{{base_url}}/modulo",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2024-05-07T23:41:08.958Z",
+            "modified": "2024-05-10T20:42:35.358Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "codigo",
+                    "value": "0003",
+                    "isDisabled": true,
+                    "isPath": false
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"offset\":0,\n  \"limit\": 10,\n  \"nombre\": \"\",\n  \"estado\": true\n}",
+                "form": []
+            }
+        }
+    ],
+    "ref": "nTw__5VCIu1z30IPJT3e53kbCuvQy1VM5SQxsUn0Sr6fqvM0_3MXxXh02ys5R9C68g9dkz2lwgA2A6SnEGIooA"
+}

@@ -1,0 +1,86 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "Sedes",
+    "collectionId": "3de9100e-ac9d-4e38-87b5-b5b6c81af186",
+    "dateExported": "2024-05-15T22:09:48.217Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "ce15141e-699d-43ec-8136-db25e8ca6ee4",
+            "colId": "3de9100e-ac9d-4e38-87b5-b5b6c81af186",
+            "containerId": "",
+            "name": "Listar Sedes",
+            "url": "{{base_url}}/sedes",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2024-05-06T17:37:36.571Z",
+            "modified": "2024-05-14T17:35:48.401Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"offset\":0,\n  \"limit\": 10,\n  \"nombre\": \"\",\n  \"estado\": true\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "08d0f304-876b-4116-a527-e2ee03c1984d",
+            "colId": "3de9100e-ac9d-4e38-87b5-b5b6c81af186",
+            "containerId": "",
+            "name": "LIstar Sedes por Id",
+            "url": "{{base_url}}/sedes/1",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2024-05-06T17:39:28.280Z",
+            "modified": "2024-05-14T17:16:27.063Z",
+            "headers": []
+        },
+        {
+            "_id": "ba4e3df8-4ced-4591-a73f-1e5280c2ec3d",
+            "colId": "3de9100e-ac9d-4e38-87b5-b5b6c81af186",
+            "containerId": "",
+            "name": "Actualizar Sede",
+            "url": "{{base_url}}/sedes/1",
+            "method": "PUT",
+            "sortNum": 40000,
+            "created": "2024-05-06T17:39:55.492Z",
+            "modified": "2024-05-14T17:39:13.423Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"nombre_sede\": \"sede 1 update\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "5b94f74a-7305-406a-8816-14cbcb1fd881",
+            "colId": "3de9100e-ac9d-4e38-87b5-b5b6c81af186",
+            "containerId": "",
+            "name": "Cambiar Estado de Sede",
+            "url": "{{base_url}}/sedes/1",
+            "method": "DELETE",
+            "sortNum": 50000,
+            "created": "2024-05-06T17:42:18.151Z",
+            "modified": "2024-05-14T17:42:54.606Z",
+            "headers": []
+        },
+        {
+            "_id": "a95ac7bb-d8bc-4f77-aeb9-9721eb2ea655",
+            "colId": "3de9100e-ac9d-4e38-87b5-b5b6c81af186",
+            "containerId": "",
+            "name": "Crear Sede",
+            "url": "{{base_url}}/sedes",
+            "method": "POST",
+            "sortNum": 60000,
+            "created": "2024-05-06T17:42:48.769Z",
+            "modified": "2024-05-14T17:35:37.122Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"nombre_sede\": \"sede nuevo1\",\n  \"estado\": true\n}",
+                "form": []
+            }
+        }
+    ],
+    "ref": "_CfAjjDqWnJkNFNHZz_I7ArpRl0a532kyKtvHUEVbMocV-Bd4hMIxAHcmCfHCrSaiGqOHIHgIK78C938-DNn9A"
+}

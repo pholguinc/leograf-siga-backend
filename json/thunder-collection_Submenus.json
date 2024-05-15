@@ -1,0 +1,86 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "Submenus",
+    "collectionId": "8609ce33-605c-4c6d-ac05-6b5f9dfea897",
+    "dateExported": "2024-05-15T22:10:25.753Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "bf9546ad-e991-413b-a207-f0913d9acf73",
+            "colId": "8609ce33-605c-4c6d-ac05-6b5f9dfea897",
+            "containerId": "",
+            "name": "Crear SubMenu",
+            "url": "{{base_url}}/submenus",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2024-05-15T15:36:12.921Z",
+            "modified": "2024-05-15T20:48:04.922Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"nombre_submenu\": \"menu nuevo\",\n  \"id_menu\":1,\n  \"id_modulo\": 1\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "cedfc884-8ae9-4e09-9ab2-5896a130c650",
+            "colId": "8609ce33-605c-4c6d-ac05-6b5f9dfea897",
+            "containerId": "",
+            "name": "Listar submenus",
+            "url": "{{base_url}}/submenus",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2024-05-15T15:36:12.922Z",
+            "modified": "2024-05-15T20:48:24.079Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"offset\": 0,\n  \"limit\": 10,\n  \"id_modulo\": 0,\n  \"id_menu\": 0,\n  \"nombre_submenu\": \"nuevo\",\n  \"estado\": true\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "0af65f4e-9c3f-45c8-bd02-587668537beb",
+            "colId": "8609ce33-605c-4c6d-ac05-6b5f9dfea897",
+            "containerId": "",
+            "name": "Actualizar SubMenu",
+            "url": "{{base_url}}/submenus/1",
+            "method": "PUT",
+            "sortNum": 30000,
+            "created": "2024-05-15T15:36:12.923Z",
+            "modified": "2024-05-15T17:47:43.892Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"nombre_submenu\": \"submenu id 1\",\n  \"id_menu\":1,\n  \"id_modulo\": 1\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "5973702a-1b27-4e91-b87b-58a56e9891d2",
+            "colId": "8609ce33-605c-4c6d-ac05-6b5f9dfea897",
+            "containerId": "",
+            "name": "Cambiar estado SubMenu",
+            "url": "{{base_url}}/submenus/1",
+            "method": "DELETE",
+            "sortNum": 30000,
+            "created": "2024-05-15T15:36:12.924Z",
+            "modified": "2024-05-15T17:33:47.172Z",
+            "headers": []
+        },
+        {
+            "_id": "7f50d96d-23eb-47d2-8617-0dbb73d3747c",
+            "colId": "8609ce33-605c-4c6d-ac05-6b5f9dfea897",
+            "containerId": "",
+            "name": "Listar submenus por id",
+            "url": "{{base_url}}/submenus/1",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2024-05-15T15:36:12.925Z",
+            "modified": "2024-05-15T17:26:10.280Z",
+            "headers": []
+        }
+    ],
+    "ref": "WUNF67bRwU1854TWor2_kmWoRupYg2kureUJKBylsX72hx56puRtbTiEZ1CMeXNoIcHCDVSYDf7DO-lAN0mRlg"
+}
