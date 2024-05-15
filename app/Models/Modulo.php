@@ -18,4 +18,9 @@ class Modulo extends Model
     {
         return $this->hasMany(Menu::class);
     }
+
+    public function submenus()
+    {
+        return $this->hasMany(Submenu::class);
+    }
 }

@@ -7,13 +7,16 @@ use App\Http\Requests\Roles\RolStoreRequest;
 use App\Http\Requests\Roles\RolUpdateRequest;
 use App\Http\Resources\RolesResource;
 use App\Models\Rol;
+use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use PDO;
 use Throwable;
 
 class RolController extends Controller
 {
+    use ResponseTrait;
     public function index(Request $request){
 
         $offset = $request->input('offset', 0);
@@ -44,36 +47,37 @@ class RolController extends Controller
         return response()->json($data);
         
     }
-    public function store(RolStoreRequest $request)
+    public function store(Request $request)
     {
-
         try {
             DB::beginTransaction();
 
-            $roles = new Rol();
-            $roles->rol = $request->rol;
-            $roles->estado = $request->estado;
+            $codigoPrefix = 'RO0';
+            $nombreRol = $request->input('nombre_rol');
+            $statement = DB::connection()->getPdo()->prepare('SELECT last_value FROM roles_id_seq');
+            $statement->execute();
+            $idRol = $statement->fetchColumn();
 
-            $codigoPrefix = '000';
-            $roles->codigo = $codigoPrefix;
+            $codigoRol = $codigoPrefix . $idRol;
 
-            $roles->save();
 
-            $roles->codigo = $codigoPrefix . $roles->id;
-            $roles->save();
+            $query = DB::connection()->getPdo()->prepare('SELECT * FROM roles_list_create(:id_rol,:nombre,:codigo)');
+            $query->bindParam(':id_rol', $idRol);
+            $query->bindParam(':nombre', $nombreRol);
+            $query->bindParam(':codigo', $codigoRol);
 
+
+            $rol = new Rol();
+
+            $query->execute();
+            $sedeData = $query->fetch(PDO::FETCH_ASSOC);
 
             DB::commit();
 
-            $messages = [
-                'message' => 'Registro exitoso',
-                'status' => 200
-            ];
 
-
-
-            return response()->json($messages);
+            return $this->responseJson($sedeData);
         } catch (Throwable $e) {
+            DB::rollBack();
             throw $e;
         }
     }

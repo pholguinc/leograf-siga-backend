@@ -20,6 +20,9 @@ return new class extends Migration
             //Llaves foráneas
             $table->unsignedBigInteger('menu_id');
             $table->foreign('menu_id')->references('id')->on('menus');
+
+            $table->unsignedBigInteger('modulo_id');
+            $table->foreign('modulo_id')->references('id')->on('modulos');
             $table->timestamps();
         });
     }

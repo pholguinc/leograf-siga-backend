@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\MenuController;
 use App\Http\Controllers\Api\ModulosController;
 use App\Http\Controllers\Api\RolController;
 use App\Http\Controllers\Api\SedesController;
+use App\Http\Controllers\Api\SubmenuController;
 use App\Http\Controllers\Api\UsuariosController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -76,6 +77,19 @@ Route::controller((MenuController::class))->prefix('menus')->name('menus.')->gro
 });
 
 /*Endpoints de Menus */
+
+
+// /*Endpoints de SubMenus */
+
+Route::controller((SubmenuController::class))->prefix('submenus')->name('submenus.')->group(function () {
+    Route::get('/', 'index')->name('listar');
+    Route::post('/', 'store')->name('crear');
+    Route::get('/{id}', 'show')->name('ver');
+    Route::put('/{id}', 'update')->name('editar');
+    Route::delete('/{id}', 'delete')->name('eliminar');
+});
+
+/*Endpoints de SubMenus */
 
 
 // /*Endpoints de Usuarios */
