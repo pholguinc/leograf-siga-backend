@@ -23,4 +23,9 @@ class Modulo extends Model
     {
         return $this->hasMany(Submenu::class);
     }
+
+    public function permisos()
+    {
+        return $this->hasMany(Permiso::class, 'modulo_id');
+    }
 }

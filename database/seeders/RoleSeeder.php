@@ -14,9 +14,33 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        $role1 =Role::create(["name" => "Administrador"]);
-        $role2 = Role::create(["name" => "Asistente de produccion"]);
 
-        Permission::create(['name'=> 'usuarios.listar'])->assignRole($role1);
+        Permission::create(['name' => 'Acceder Seguridad']);
+        Permission::create(['name' => 'Consultar Seguridad']);
+        Permission::create(['name' => 'Agregar Seguridad']);
+        Permission::create(['name' => 'Modificar  Seguridad']);
+        Permission::create(['name' => 'Eliminar Seguridad']);
+        Permission::create(['name' => 'Aprobar Seguridad']);
+        Permission::create(['name' => 'Asignar Seguridad']);
+        Permission::create(['name' => 'Observar Seguridad']);
+        Permission::create(['name' => 'Derivar Seguridad']);
+        Permission::create(['name' => 'Exportar Seguridad']);
+        Permission::create(['name' => 'Importar Seguridad']);
+        Permission::create(['name' => 'Activar Seguridad']);
+        Permission::create(['name' => 'Inactivar Seguridad']);
+
+        // Permission::create(['name'=> 'Acceder Almacen']);
+        // Permission::create(['name' => 'Consultar Almacen']);
+        // Permission::create(['name' => 'Agregar Almacen']);
+        // Permission::create(['name' => 'Modificar  Almacen']);
+        // Permission::create(['name' => 'Eliminar Almacen']);
+        // Permission::create(['name' => 'Aprobar Almacen']);
+        // Permission::create(['name' => 'Asignar Almacen']);
+        // Permission::create(['name' => 'Observar Almacen']);
+        // Permission::create(['name' => 'Derivar Almacen']);
+        // Permission::create(['name' => 'Exportar Almacen']);
+        // Permission::create(['name' => 'Importar Almacen']);
+        // Permission::create(['name' => 'Activar Almacen']);
+        // Permission::create(['name' => 'Inactivar Almacen']);
     }
 }
