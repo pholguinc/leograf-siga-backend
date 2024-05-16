@@ -8,23 +8,16 @@ use Illuminate\Routing\Controller as BaseController;
 
 
 /**
- * @OA\Info(
- *      version="1.0.0",
- *      title="Leograf API",
- *      description="Api Leograf Laravel y PostgreSQL",
- 
- * )
- * 
- * @OA\Get(
- *     path="/",
- *     description="Home page",
- *     @OA\Response(response="default", description="Welcome page")
- * )
- */
+* @OA\Info(
+*             title="Proyecto API Leograf-Siga",
+*             version="1.0",
+* )
+*
+* @OA\Server(url="http://leograf-siga-backend.test:8085")
+*/
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
 
-    
 }

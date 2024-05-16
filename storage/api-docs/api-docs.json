@@ -1,18 +1,428 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Leograf API",
-        "description": "Api Leograf Laravel y PostgreSQL",
-        "version": "1.0.0"
+        "title": "Proyecto API Leograf-Siga",
+        "version": "1.0"
     },
+    "servers": [
+        {
+            "url": "http://leograf-siga-backend.test:8085"
+        }
+    ],
     "paths": {
-        "/": {
+        "/api/rol": {
             "get": {
-                "description": "Home page",
-                "operationId": "58658e34a5c8bd71c4a0afed6de10d20",
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Función para listar todos los roles",
+                "operationId": "listRoles",
                 "responses": {
-                    "default": {
-                        "description": "Welcome page"
+                    "200": {
+                        "description": "Peticion realizada con exito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "rows": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "offset": {
+                                                        "type": "number",
+                                                        "example": "0"
+                                                    },
+                                                    "limit": {
+                                                        "type": "number",
+                                                        "example": "0"
+                                                    },
+                                                    "nombre": {
+                                                        "type": "string",
+                                                        "example": "string"
+                                                    },
+                                                    "estado": {
+                                                        "type": "boolean",
+                                                        "example": "true"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Función para crear un nuevo rol",
+                "operationId": "InsertRoles",
+                "requestBody": {
+                    "description": "Datos de la sede a actualizar",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre_rol": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "estado": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Peticion realizada con exito"
+                    }
+                }
+            }
+        },
+        "/api/rol/{id}": {
+            "get": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Función para ver detalles por rol",
+                "operationId": "SelectRolOfId",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del rol",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID del rol",
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "nombre": {
+                                            "description": "Nombre del rol",
+                                            "type": "string",
+                                            "example": "string"
+                                        },
+                                        "codigo": {
+                                            "description": "Codigo del rol",
+                                            "type": "string",
+                                            "example": "string"
+                                        },
+                                        "estado": {
+                                            "description": "Estado del rol",
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Función para actulizar los roles",
+                "operationId": "UpdateRol",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del rol a actualizar",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Datos de la sede a actualizar",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre_rol": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "estado": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Sede actualizada exitosamente"
+                    },
+                    "404": {
+                        "description": "Sede no encontrada"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Función para cambiar de estado del rol",
+                "operationId": "DeleteRol",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del rol",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Peticion realizada con exito"
+                    },
+                    "404": {
+                        "description": "Sede no encontrado"
+                    }
+                }
+            }
+        },
+        "/api/sedes": {
+            "get": {
+                "tags": [
+                    "Sedes"
+                ],
+                "summary": "Función para listar todas las sedes",
+                "operationId": "listSedes",
+                "responses": {
+                    "200": {
+                        "description": "Peticion realizada con exito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "rows": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "offset": {
+                                                        "type": "number",
+                                                        "example": "0"
+                                                    },
+                                                    "limit": {
+                                                        "type": "number",
+                                                        "example": "0"
+                                                    },
+                                                    "nombre": {
+                                                        "type": "string",
+                                                        "example": "string"
+                                                    },
+                                                    "estado": {
+                                                        "type": "boolean",
+                                                        "example": "true"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Sedes"
+                ],
+                "summary": "Función para crear un nuevo registro",
+                "operationId": "InsertSedes",
+                "requestBody": {
+                    "description": "Datos de la sede a actualizar",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre_sede": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "estado": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Peticion realizada con exito"
+                    }
+                }
+            }
+        },
+        "/api/sedes/{id}": {
+            "get": {
+                "tags": [
+                    "Sedes"
+                ],
+                "summary": "Función para ver detalle por Id",
+                "operationId": "SelectSedesOfId",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la sede",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID de la sede",
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "codigo": {
+                                            "description": "Codigo de la sede",
+                                            "type": "string",
+                                            "example": "string"
+                                        },
+                                        "sede": {
+                                            "description": "Nombre de la sede",
+                                            "type": "string",
+                                            "example": "string"
+                                        },
+                                        "estado": {
+                                            "description": "Estado de la sede",
+                                            "type": "boolean"
+                                        },
+                                        "alias": {
+                                            "description": "Alias de la sede",
+                                            "type": "string",
+                                            "example": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Sedes"
+                ],
+                "summary": "Función para actulizar registros",
+                "operationId": "UpdateSedes",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la sede a actualizar",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Datos de la sede a actualizar",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre_sede": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "estado": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Sede actualizada exitosamente"
+                    },
+                    "404": {
+                        "description": "Sede no encontrada"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Sedes"
+                ],
+                "summary": "Función para cambiar de estado de la sede",
+                "operationId": "DeleteSedes",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la sede",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Peticion realizada con exito"
+                    },
+                    "404": {
+                        "description": "Sede no encontrado"
                     }
                 }
             }

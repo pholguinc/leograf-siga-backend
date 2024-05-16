@@ -20,7 +20,49 @@ class SedesController extends Controller
 {
     use ResponseTrait;
 
-    //Función para listar todas las sedes 
+/**
+     * Función para listar todas las sedes
+     * @OA\Get (
+     *     path="/api/sedes",
+     *     tags={"Sedes"},
+     *     operationId="listSedes",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Peticion realizada con exito",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 type="array",
+     *                 property="rows",
+     *                 @OA\Items(
+     *                     type="object",
+     *                     @OA\Property(
+     *                         property="offset",
+     *                         type="number",
+     *                         example="0"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="limit",
+     *                         type="number",
+     *                         example="0"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="nombre",
+     *                         type="string",
+     *                         example="string"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="estado",
+     *                         type="boolean",
+     *                         example="true"
+     *                     )
+     *                 )
+     *             )
+     *         )
+     *     )
+     * )
+     */
+
+    //Función para listar todas las sedes
     public function index(Request $request)
     {
         try {
@@ -55,12 +97,34 @@ class SedesController extends Controller
         }
     }
 
+    /**
+     * Función para crear un nuevo registro
+     * @OA\Post (
+     *     path="/api/sedes",
+     *     tags={"Sedes"},
+     *     operationId="InsertSedes",
+     *     @OA\RequestBody(
+     *          required=true,
+     *              description="Datos de la sede a actualizar",
+     *              @OA\JsonContent(
+     *              @OA\Property(property="nombre_sede", type="string", example="string"),
+     *              @OA\Property(property="estado", type="boolean", example=true)
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Peticion realizada con exito",
+     *     )
+     * )
+     */
+
+
     //Función para crear un nuevo registro
     public function store(Request $request)
     {
         try {
             DB::beginTransaction();
-            
+
             $codigoPrefix = 'SE0';
             $nombreSede = $request->input('nombre_sede');
             $statement = DB::connection()->getPdo()->prepare('SELECT last_value FROM sedes_id_seq');
@@ -69,7 +133,7 @@ class SedesController extends Controller
 
             $codigoSede = $codigoPrefix . $idSede;
 
-            
+
             $query = DB::connection()->getPdo()->prepare('SELECT * FROM sedes_list_create(:id_sede,:nombre,:codigo,:alias)');
             $query->bindParam(':id_sede', $idSede);
             $query->bindParam(':nombre', $nombreSede);
@@ -92,6 +156,33 @@ class SedesController extends Controller
         }
     }
 
+    /**
+     * Función para ver detalle por Id
+     * @OA\Get (
+     *     path="/api/sedes/{id}",
+     *     tags={"Sedes"},
+     *     operationId="SelectSedesOfId",
+     *     @OA\Parameter(
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         description="ID de la sede",
+     *         @OA\Schema(type="number")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="id", type="integer", description="ID de la sede", example=0),
+     *              @OA\Property(property="codigo", type="string", description="Codigo de la sede", example="string"),
+     *              @OA\Property(property="sede", type="string", description="Nombre de la sede", example="string"),
+     *              @OA\Property(property="estado", type="boolean", description="Estado de la sede"),
+     *              @OA\Property(property="alias", type="string", description="Alias de la sede", example="string")
+     *         )
+     *     )
+     * )
+     */
+
     //Función para ver detalle por Id
     public function show($id)
     {
@@ -109,6 +200,38 @@ class SedesController extends Controller
             throw $e;
         }
     }
+
+    /**
+     * Función para actulizar registros
+     * @OA\Put (
+     *     path="/api/sedes/{id}",
+     *     tags={"Sedes"},
+     *     operationId="UpdateSedes",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID de la sede a actualizar",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *          required=true,
+     *              description="Datos de la sede a actualizar",
+     *              @OA\JsonContent(
+     *              @OA\Property(property="nombre_sede", type="string", example="string"),
+     *              @OA\Property(property="estado", type="boolean", example=true)
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Sede actualizada exitosamente"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Sede no encontrada"
+     *     )
+     * )
+     */
 
     //Función para actulizar registros
     public function update(Request $request, $id)
@@ -134,6 +257,31 @@ class SedesController extends Controller
             throw $e;
         }
     }
+
+    /**
+     *  Función para cambiar de estado de la sede
+     *      @OA\Delete(
+     *          path="/api/sedes/{id}",
+     *          tags={"Sedes"},
+     *          operationId="DeleteSedes",
+     *      @OA\Parameter(
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         description="ID de la sede",
+     *         @OA\Schema(type="number")
+     *     ),
+     *      @OA\Response(
+     *         response=200,
+     *         description="Peticion realizada con exito",
+     *     ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Sede no encontrado"
+     *      )
+     *  )
+ */
+
 
     //Función para cambiar de estado
     public function delete($id)
