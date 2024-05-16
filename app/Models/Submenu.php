@@ -18,9 +18,4 @@ class Submenu extends Model
     public function menus(){
         return $this->hasMany(Menu::class);
     }
-
-    public function modulo()
-    {
-        return $this->belongsTo(Modulo::class);
-    }
 }

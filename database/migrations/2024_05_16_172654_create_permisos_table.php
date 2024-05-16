@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('permisos', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre_permiso');
+            $table->string('nombre');
+            $table->string('descripcion');
             $table->boolean('estado')->nullable(false)->default(0);
             $table->foreignId('modulo_id')->constrained('modulos');
             $table->timestamps();

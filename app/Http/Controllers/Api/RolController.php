@@ -150,6 +150,41 @@ class RolController extends Controller
         }
     }
 
+    public function permisos(Request $request){
+        try {
+            DB::beginTransaction();
+            $rolId = $request->input('rol_id');
+            $permisosIds = array_map('intval', $request->input('permisos_ids'));;
+
+            if (empty($rolId) || empty($permisosIds)) {
+                return response()->json(['error' => 'Faltan datos para la asignación'], 400);
+            }
+
+            $permisosString = implode(',', $permisosIds);
+
+
+            $pdo = DB::connection()->getPdo();
+            $query = $pdo->prepare('SELECT * FROM asignar_rol_permisos(:rolId, :permisosIds)');
+            $query->bindParam(':rolId', $rolId);
+            $query->bindParam(':permisosIds', $permisosString);
+            $query->execute();
+
+            $permisosData = $query->fetchAll(PDO::FETCH_ASSOC);
+            $responseData = [
+                'mensaje' => 'Permisos asignados correctamente',
+                'datos' => $permisosData,
+            ];
+
+            DB::commit();
+
+            return response()->json($responseData, 201);
+
+        } catch (Throwable $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+
     /**
      * Función para ver detalles por rol
      * @OA\Get (

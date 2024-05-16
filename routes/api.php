@@ -42,6 +42,7 @@ Route::controller((SedesController::class))->prefix('sedes')->name('sede.')->gro
 Route::controller((RolController::class))->prefix('rol')->name('rol.')->group(function () {
     Route::get('/', 'index')->name('listar');
     Route::post('/', 'store')->name('crear');
+    Route::post('/permisos', 'permisos')->name('permisos');
     Route::get('/{id}', 'show')->name('ver');
     Route::put('/{id}', 'update')->name('editar');
     Route::delete('/{id}', 'delete')->name('eliminar');
