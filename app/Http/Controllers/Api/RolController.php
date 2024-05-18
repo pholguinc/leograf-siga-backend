@@ -306,7 +306,7 @@ class RolController extends Controller
      *          description="Sede no encontrado"
      *      )
      *  )
- */
+     */
 
     public function delete($id)
     {

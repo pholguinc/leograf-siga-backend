@@ -10,6 +10,225 @@
         }
     ],
     "paths": {
+        "/api/modulo": {
+            "get": {
+                "tags": [
+                    "Modulos"
+                ],
+                "summary": "Función para listar todos modulos",
+                "operationId": "listModulos",
+                "responses": {
+                    "200": {
+                        "description": "Peticion realizada con exito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "rows": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "offset": {
+                                                        "type": "number",
+                                                        "example": "0"
+                                                    },
+                                                    "limit": {
+                                                        "type": "number",
+                                                        "example": "0"
+                                                    },
+                                                    "nombre": {
+                                                        "type": "string",
+                                                        "example": "string"
+                                                    },
+                                                    "estado": {
+                                                        "type": "boolean",
+                                                        "example": "true"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Modulos"
+                ],
+                "summary": "Función para crear un nuevo modulos",
+                "operationId": "InsertModulos",
+                "requestBody": {
+                    "description": "Datos del modulo a actualizar",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre_modulo": {
+                                        "type": "string",
+                                        "example": "modulo nuevo"
+                                    },
+                                    "image_url": {
+                                        "type": "string",
+                                        "example": "imagen.png"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Peticion realizada con exito"
+                    }
+                }
+            }
+        },
+        "/api/modulo/{id}": {
+            "get": {
+                "tags": [
+                    "Modulos"
+                ],
+                "summary": "Función para ver detalles por modulos",
+                "operationId": "SelectModulosOfId",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del Modulo",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID del modulo",
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "codigo": {
+                                            "description": "Codigo del modulo",
+                                            "type": "string",
+                                            "example": "codigo"
+                                        },
+                                        "modulo": {
+                                            "description": "Nombre del modulo",
+                                            "type": "string",
+                                            "example": "modulo"
+                                        },
+                                        "alias": {
+                                            "description": "Alias del modulo",
+                                            "type": "string",
+                                            "example": "alias"
+                                        },
+                                        "imageurl": {
+                                            "description": "Imagen del modulo",
+                                            "type": "string",
+                                            "example": "imagen.jpg"
+                                        },
+                                        "estado": {
+                                            "description": "Estado del modulo",
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Modulos"
+                ],
+                "summary": "Función para actulizar los modulos",
+                "operationId": "UpdateModulo",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del modulo a actualizar",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Datos de la sede a actualizar",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre_modulo": {
+                                        "type": "string",
+                                        "example": "modulo nuevo"
+                                    },
+                                    "image_url": {
+                                        "type": "string",
+                                        "example": "imagen.png"
+                                    },
+                                    "estado": {
+                                        "type": "boolean"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Sede actualizada exitosamente"
+                    },
+                    "404": {
+                        "description": "Sede no encontrada"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Modulos"
+                ],
+                "summary": "Función para cambiar de estado del modulos",
+                "operationId": "DeleteModulos",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del modulo",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Peticion realizada con exito"
+                    },
+                    "404": {
+                        "description": "Sede no encontrado"
+                    }
+                }
+            }
+        },
         "/api/rol": {
             "get": {
                 "tags": [
@@ -404,7 +623,7 @@
                 "tags": [
                     "Sedes"
                 ],
-                "summary": "Función para cambiar de estado de la sede",
+                "summary": "Función para cambiar de estado",
                 "operationId": "DeleteSedes",
                 "parameters": [
                     {

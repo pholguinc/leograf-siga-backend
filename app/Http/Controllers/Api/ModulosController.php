@@ -18,6 +18,49 @@ class ModulosController extends Controller
 {
 
     use ResponseTrait;
+
+    /**
+     * Función para listar todos modulos
+     * @OA\Get (
+     *     path="/api/modulo",
+     *     tags={"Modulos"},
+     *     operationId="listModulos",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Peticion realizada con exito",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 type="array",
+     *                 property="rows",
+     *                 @OA\Items(
+     *                     type="object",
+     *                     @OA\Property(
+     *                         property="offset",
+     *                         type="number",
+     *                         example="0"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="limit",
+     *                         type="number",
+     *                         example="0"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="nombre",
+     *                         type="string",
+     *                         example="string"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="estado",
+     *                         type="boolean",
+     *                         example="true"
+     *                     )
+     *                 )
+     *             )
+     *         )
+     *     )
+     * )
+     */
+
     public function index(Request $request)
     {
         try {
@@ -50,6 +93,28 @@ class ModulosController extends Controller
             throw $e;
         }
     }
+
+    /**
+     * Función para crear un nuevo modulos
+     * @OA\Post (
+     *     path="/api/modulo",
+     *     tags={"Modulos"},
+     *     operationId="InsertModulos",
+     *     @OA\RequestBody(
+     *          required=true,
+     *              description="Datos del modulo a actualizar",
+     *              @OA\JsonContent(
+     *              @OA\Property(property="nombre_modulo", type="string", example="modulo nuevo"),
+     *              @OA\Property(property="image_url", type="string", example="imagen.png")
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Peticion realizada con exito",
+     *     )
+     * )
+     */
+
     public function store(Request $request)
     {
         try {
@@ -87,6 +152,34 @@ class ModulosController extends Controller
         }
     }
 
+    /**
+     * Función para ver detalles por modulos
+     * @OA\Get (
+     *     path="/api/modulo/{id}",
+     *     tags={"Modulos"},
+     *     operationId="SelectModulosOfId",
+     *     @OA\Parameter(
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         description="ID del Modulo",
+     *         @OA\Schema(type="number")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="id", type="integer", description="ID del modulo", example=0),
+     *              @OA\Property(property="codigo", type="string", description="Codigo del modulo", example="codigo"),
+     *              @OA\Property(property="modulo", type="string", description="Nombre del modulo", example="modulo"),
+     *              @OA\Property(property="alias", type="string", description="Alias del modulo", example="alias"),
+     *              @OA\Property(property="imageurl", type="string", description="Imagen del modulo", example="imagen.jpg"),
+     *              @OA\Property(property="estado", type="boolean", description="Estado del modulo"),
+     *         )
+     *     )
+     * )
+     */
+
     public function show($id)
     {
 
@@ -103,6 +196,39 @@ class ModulosController extends Controller
             throw $e;
         }
     }
+
+    /**
+     * Función para actulizar los modulos
+     * @OA\Put (
+     *     path="/api/modulo/{id}",
+     *     tags={"Modulos"},
+     *     operationId="UpdateModulo",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID del modulo a actualizar",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *          required=true,
+     *              description="Datos de la sede a actualizar",
+     *              @OA\JsonContent(
+     *                  @OA\Property(property="nombre_modulo", type="string", example="modulo nuevo"),
+     *                  @OA\Property(property="image_url", type="string", example="imagen.png"),
+     *                  @OA\Property(property="estado", type="boolean")
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Sede actualizada exitosamente"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Sede no encontrada"
+     *     )
+     * )
+     */
 
     public function update(Request $request, $id)
     {
@@ -129,6 +255,29 @@ class ModulosController extends Controller
         }
     }
 
+    /**
+     *  Función para cambiar de estado del modulos
+     *      @OA\Delete(
+     *          path="/api/modulo/{id}",
+     *          tags={"Modulos"},
+     *          operationId="DeleteModulos",
+     *      @OA\Parameter(
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         description="ID del modulo",
+     *         @OA\Schema(type="number")
+     *     ),
+     *      @OA\Response(
+     *         response=200,
+     *         description="Peticion realizada con exito",
+     *     ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Sede no encontrado"
+     *      )
+     *  )
+     */
 
     public function delete($id)
     {

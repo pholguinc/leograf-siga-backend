@@ -259,7 +259,7 @@ class SedesController extends Controller
     }
 
     /**
-     *  Función para cambiar de estado de la sede
+     *  Función para cambiar de estado
      *      @OA\Delete(
      *          path="/api/sedes/{id}",
      *          tags={"Sedes"},
