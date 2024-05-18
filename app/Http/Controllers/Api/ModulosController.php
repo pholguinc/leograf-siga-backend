@@ -274,7 +274,7 @@ class ModulosController extends Controller
      *     ),
      *      @OA\Response(
      *          response=404,
-     *          description="Sede no encontrado"
+     *          description="Modulo no encontrado"
      *      )
      *  )
      */

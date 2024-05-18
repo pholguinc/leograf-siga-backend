@@ -10,6 +10,142 @@
         }
     ],
     "paths": {
+        "/api/menus": {
+            "get": {
+                "tags": [
+                    "Menus"
+                ],
+                "summary": "Función para listar todos modulos",
+                "operationId": "listMenus",
+                "responses": {
+                    "200": {
+                        "description": "Peticion realizada con exito"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Menus"
+                ],
+                "summary": "Función para crear un nuevo menu",
+                "operationId": "InsertMenu",
+                "requestBody": {
+                    "description": "Datos del menu a actualizar",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre_menu": {
+                                        "type": "string",
+                                        "example": "menu nuevo"
+                                    },
+                                    "id_modulo": {
+                                        "type": "integer",
+                                        "example": 0
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Peticion realizada con exito"
+                    }
+                }
+            }
+        },
+        "/api/menus/{id}": {
+            "get": {
+                "tags": [
+                    "Menus"
+                ],
+                "summary": "Función para ver detalles por menus",
+                "operationId": "SelectMenuOfId",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del Menu",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID del menu",
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "codigo": {
+                                            "description": "Codigo del menu",
+                                            "type": "string",
+                                            "example": "codigo"
+                                        },
+                                        "menu": {
+                                            "description": "Nombre del menu",
+                                            "type": "string",
+                                            "example": "menu"
+                                        },
+                                        "alias": {
+                                            "description": "Alias del menu",
+                                            "type": "string",
+                                            "example": "alias"
+                                        },
+                                        "estado": {
+                                            "description": "Estado del menu",
+                                            "type": "boolean"
+                                        },
+                                        "modulo_id": {
+                                            "description": "Numero de modulo",
+                                            "type": "number",
+                                            "example": 0
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Menus"
+                ],
+                "summary": "Función para cambiar de estado del modulos",
+                "operationId": "DeleteMenu",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del menu",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Peticion realizada con exito"
+                    },
+                    "404": {
+                        "description": "Menu no encontrado"
+                    }
+                }
+            }
+        },
         "/api/modulo": {
             "get": {
                 "tags": [
@@ -224,7 +360,7 @@
                         "description": "Peticion realizada con exito"
                     },
                     "404": {
-                        "description": "Sede no encontrado"
+                        "description": "Modulo no encontrado"
                     }
                 }
             }
@@ -295,6 +431,43 @@
                                     "estado": {
                                         "type": "boolean",
                                         "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Peticion realizada con exito"
+                    }
+                }
+            }
+        },
+        "/api/rol/permisos": {
+            "post": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Función para agregar permisos a los roles",
+                "operationId": "InsertPermisosRoles",
+                "requestBody": {
+                    "description": "Asignacion de roles",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "rol_id": {
+                                        "description": "ID del rol",
+                                        "type": "integer"
+                                    },
+                                    "permisos_ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
                                     }
                                 },
                                 "type": "object"
@@ -430,7 +603,7 @@
                         "description": "Peticion realizada con exito"
                     },
                     "404": {
-                        "description": "Sede no encontrado"
+                        "description": "Rol no encontrado"
                     }
                 }
             }
@@ -642,6 +815,188 @@
                     },
                     "404": {
                         "description": "Sede no encontrado"
+                    }
+                }
+            }
+        },
+        "/api/submenus": {
+            "get": {
+                "tags": [
+                    "Submenus"
+                ],
+                "summary": "Función para listar todos modulos",
+                "operationId": "listSubmenus",
+                "responses": {
+                    "200": {
+                        "description": "Peticion realizada con exito"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Submenus"
+                ],
+                "summary": "Función para crear un nuevo modulos",
+                "operationId": "InsertSubmenus",
+                "requestBody": {
+                    "description": "Datos del submenus a actualizar",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre_submenu": {
+                                        "type": "string",
+                                        "example": "Submenu_nuevo"
+                                    },
+                                    "estado": {
+                                        "type": "boolean"
+                                    },
+                                    "id_menu": {
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Peticion realizada con exito"
+                    }
+                }
+            }
+        },
+        "/api/submenus/{id}": {
+            "get": {
+                "tags": [
+                    "Submenus"
+                ],
+                "summary": "Función para ver detalles por modulos",
+                "operationId": "SelectSubmenuOfId",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del Submenu",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID del submenu",
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "codigo": {
+                                            "description": "Codigo del submenu",
+                                            "type": "string",
+                                            "example": "codigo"
+                                        },
+                                        "submenu": {
+                                            "description": "Nombre del submenu",
+                                            "type": "string",
+                                            "example": "submenu"
+                                        },
+                                        "menu_id": {
+                                            "description": "Imagen del submenu",
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "estado": {
+                                            "description": "Estado del submenu",
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Submenus"
+                ],
+                "summary": "Función para actulizar los modulos",
+                "operationId": "UpdateSubmenu",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del Submenu a actualizar",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Datos de la sede a actualizar",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre_submenu": {
+                                        "type": "string",
+                                        "example": "Submenu_nuevo"
+                                    },
+                                    "estado": {
+                                        "type": "boolean"
+                                    },
+                                    "id_menu": {
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Sede actualizada exitosamente"
+                    },
+                    "404": {
+                        "description": "Sede no encontrada"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Submenus"
+                ],
+                "summary": "Función para cambiar de estado del modulos",
+                "operationId": "DeleteSubmenus",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del submenus",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Peticion realizada con exito"
+                    },
+                    "404": {
+                        "description": "Submenu no encontrado"
                     }
                 }
             }
