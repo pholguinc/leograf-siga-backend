@@ -150,34 +150,78 @@ class RolController extends Controller
         }
     }
 
+    /**
+     * Función para agregar permisos a los roles
+     * @OA\Post (
+     *     path="/api/rol/permisos",
+     *     tags={"Roles"},
+     *     operationId="InsertPermisosRoles",
+     *     @OA\RequestBody(
+     *          required=true,
+     *          description="Asignacion de roles",
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                  property="rol_id",
+     *                  type="integer",
+     *                  description="ID del rol"
+     *              ),
+     *              @OA\Property(
+     *                  property="permisos_ids",
+     *                  type="array",
+     *                   @OA\Items(
+     *                      type="integer"
+     *                   )
+     *              )
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Peticion realizada con exito",
+     *     )
+     * )
+     */
+
     public function permisos(Request $request){
         try {
             DB::beginTransaction();
             $rolId = $request->input('rol_id');
-            $permisosIds = array_map('intval', $request->input('permisos_ids'));;
-
-            if (empty($rolId) || empty($permisosIds)) {
-                return response()->json(['error' => 'Faltan datos para la asignación'], 400);
-            }
-
-            $permisosString = implode(',', $permisosIds);
+            $permisosIds = $request->input('permisos_ids');
 
 
             $pdo = DB::connection()->getPdo();
             $query = $pdo->prepare('SELECT * FROM asignar_rol_permisos(:rolId, :permisosIds)');
-            $query->bindParam(':rolId', $rolId);
-            $query->bindParam(':permisosIds', $permisosString);
-            $query->execute();
+        
 
-            $permisosData = $query->fetchAll(PDO::FETCH_ASSOC);
-            $responseData = [
-                'mensaje' => 'Permisos asignados correctamente',
-                'datos' => $permisosData,
-            ];
+            foreach ($permisosIds as $permisoId) {
+                $query->bindParam(':rolId', $rolId);
+                $query->bindParam(':permisosIds', $permisoId);
+                $query->execute();
+            }
+
+
+
+            if (
+                config('app.debug') || 
+                $request->has('withPermissions')
+            ) {
+                $permisos = DB::table('permisos')
+                ->join('rol_permisos', 'rol_permisos.permiso_id', '=', 'permisos.id')
+                ->where('rol_permisos.rol_id', $rolId)
+                ->select('permisos.*')
+                ->get();
+            } else {
+                $permisos = null;
+            }
+
 
             DB::commit();
 
-            return response()->json($responseData, 201);
+            $messages = [
+                'message' => 'Los permiso fueron asignados correctamente.',
+            ];
+
+
+            return $this->responseJson($messages);
 
         } catch (Throwable $e) {
             DB::rollBack();
@@ -303,10 +347,10 @@ class RolController extends Controller
      *     ),
      *      @OA\Response(
      *          response=404,
-     *          description="Sede no encontrado"
+     *          description="Rol no encontrado"
      *      )
      *  )
- */
+     */
 
     public function delete($id)
     {

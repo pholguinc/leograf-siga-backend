@@ -15,11 +15,33 @@ use Throwable;
 class MenuController extends Controller
 {
     use ResponseTrait;
+
+    /**
+     * Función para crear un nuevo menu
+     * @OA\Post (
+     *     path="/api/menus",
+     *     tags={"Menus"},
+     *     operationId="InsertMenu",
+     *     @OA\RequestBody(
+     *          required=true,
+     *              description="Datos del menu a actualizar",
+     *              @OA\JsonContent(
+     *              @OA\Property(property="nombre_menu", type="string", example="menu nuevo"),
+     *              @OA\Property(property="id_modulo", type="integer", example=0)
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Peticion realizada con exito",
+     *     )
+     * )
+     */
+
     public function store(Request $request)
     {
         try {
             DB::beginTransaction();
-            
+
             $codigoPrefix = 'ME0';
             $nombreMenu = $request->input('nombre_menu');
             $moduloId = $request->input('id_modulo');
@@ -55,6 +77,20 @@ class MenuController extends Controller
             throw $e;
         }
     }
+
+    /**
+     * Función para listar todos modulos
+     * @OA\Get (
+     *     path="/api/menus",
+     *     tags={"Menus"},
+     *     operationId="listMenus",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Peticion realizada con exito",
+     *     )
+     * )
+     */
+
     public function index(Request $request)
     {
         $offset = $request->input('offset', 0);
@@ -86,6 +122,34 @@ class MenuController extends Controller
         return response()->json($data);
     }
 
+    /**
+     * Función para ver detalles por menus
+     * @OA\Get (
+     *     path="/api/menus/{id}",
+     *     tags={"Menus"},
+     *     operationId="SelectMenuOfId",
+     *     @OA\Parameter(
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         description="ID del Menu",
+     *         @OA\Schema(type="number")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="id", type="integer", description="ID del menu", example=0),
+     *              @OA\Property(property="codigo", type="string", description="Codigo del menu", example="codigo"),
+     *              @OA\Property(property="menu", type="string", description="Nombre del menu", example="menu"),
+     *              @OA\Property(property="alias", type="string", description="Alias del menu", example="alias"),
+     *              @OA\Property(property="estado", type="boolean", description="Estado del menu"),
+     *              @OA\Property(property="modulo_id", type="number", description="Numero de modulo", example=0),
+     *         )
+     *     )
+     * )
+     */
+
     public function show($id)
     {
 
@@ -102,6 +166,30 @@ class MenuController extends Controller
             throw $e;
         }
     }
+
+    /**
+     *  Función para cambiar de estado del modulos
+     *      @OA\Delete(
+     *          path="/api/menus/{id}",
+     *          tags={"Menus"},
+     *          operationId="DeleteMenu",
+     *      @OA\Parameter(
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         description="ID del menu",
+     *         @OA\Schema(type="number")
+     *     ),
+     *      @OA\Response(
+     *         response=200,
+     *         description="Peticion realizada con exito",
+     *     ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Menu no encontrado"
+     *      )
+     *  )
+     */
 
     public function delete($id)
     {
