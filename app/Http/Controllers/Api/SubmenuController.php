@@ -15,6 +15,18 @@ class SubmenuController extends Controller
 {
     use ResponseTrait;
 
+    /**
+     * Función para listar todos modulos
+     * @OA\Get (
+     *     path="/api/submenus",
+     *     tags={"Submenus"},
+     *     operationId="listSubmenus",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Peticion realizada con exito",
+     *     )
+     * )
+     */
 
     public function index(Request $request)
     {
@@ -53,6 +65,28 @@ class SubmenuController extends Controller
         }
     }
 
+    /**
+     * Función para crear un nuevo modulos
+     * @OA\Post (
+     *     path="/api/submenus",
+     *     tags={"Submenus"},
+     *     operationId="InsertSubmenus",
+     *     @OA\RequestBody(
+     *          required=true,
+     *          description="Datos del submenus a actualizar",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="nombre_submenu", type="string", example="Submenu_nuevo"),
+     *              @OA\Property(property="estado", type="boolean"),
+     *              @OA\Property(property="id_menu", type="number")
+     *
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Peticion realizada con exito",
+     *     )
+     * )
+     */
 
     public function store(Request $request)
     {
@@ -69,7 +103,7 @@ class SubmenuController extends Controller
 
             $moduloAliasQuery = DB::table('modulos')->where('id', $moduloId)->select('alias')->first();
             $moduloAlias = $moduloAliasQuery ? $moduloAliasQuery->alias : '';
-            
+
             $menuAliasQuery = DB::table('menus')->where('id', $menuId)->select('alias')->first();
             $menuAlias = $menuAliasQuery ? $menuAliasQuery->alias : '';
 
@@ -99,6 +133,32 @@ class SubmenuController extends Controller
         }
     }
 
+    /**
+     * Función para ver detalles por modulos
+     * @OA\Get (
+     *     path="/api/submenus/{id}",
+     *     tags={"Submenus"},
+     *     operationId="SelectSubmenuOfId",
+     *     @OA\Parameter(
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         description="ID del Submenu",
+     *         @OA\Schema(type="number")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="id", type="integer", description="ID del submenu", example=0),
+     *              @OA\Property(property="codigo", type="string", description="Codigo del submenu", example="codigo"),
+     *              @OA\Property(property="submenu", type="string", description="Nombre del submenu", example="submenu"),
+     *              @OA\Property(property="menu_id", type="integer", description="Imagen del submenu", example=0),
+     *              @OA\Property(property="estado", type="boolean", description="Estado del submenu"),
+     *         )
+     *     )
+     * )
+     */
 
     public function show($id)
     {
@@ -117,6 +177,29 @@ class SubmenuController extends Controller
         }
     }
 
+    /**
+     *  Función para cambiar de estado del modulos
+     *      @OA\Delete(
+     *          path="/api/submenus/{id}",
+     *          tags={"Submenus"},
+     *          operationId="DeleteSubmenus",
+     *      @OA\Parameter(
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         description="ID del submenus",
+     *         @OA\Schema(type="number")
+     *     ),
+     *      @OA\Response(
+     *         response=200,
+     *         description="Peticion realizada con exito",
+     *     ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Submenu no encontrado"
+     *      )
+     *  )
+     */
 
     public function delete($id)
     {
@@ -133,6 +216,39 @@ class SubmenuController extends Controller
             throw $e;
         }
     }
+
+    /**
+     * Función para actulizar los modulos
+     * @OA\Put (
+     *     path="/api/submenus/{id}",
+     *     tags={"Submenus"},
+     *     operationId="UpdateSubmenu",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID del Submenu a actualizar",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *          required=true,
+     *              description="Datos de la sede a actualizar",
+     *              @OA\JsonContent(
+     *                  @OA\Property(property="nombre_submenu", type="string", example="Submenu_nuevo"),
+     *                  @OA\Property(property="estado", type="boolean"),
+     *                  @OA\Property(property="id_menu", type="number")
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Sede actualizada exitosamente"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Sede no encontrada"
+     *     )
+     * )
+     */
 
     public function update(Request $request, $id)
     {

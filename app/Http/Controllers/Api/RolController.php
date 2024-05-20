@@ -150,6 +150,37 @@ class RolController extends Controller
         }
     }
 
+    /**
+     * Función para agregar permisos a los roles
+     * @OA\Post (
+     *     path="/api/rol/permisos",
+     *     tags={"Roles"},
+     *     operationId="InsertPermisosRoles",
+     *     @OA\RequestBody(
+     *          required=true,
+     *          description="Asignacion de roles",
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                  property="rol_id",
+     *                  type="integer",
+     *                  description="ID del rol"
+     *              ),
+     *              @OA\Property(
+     *                  property="permisos_ids",
+     *                  type="array",
+     *                   @OA\Items(
+     *                      type="integer"
+     *                   )
+     *              )
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Peticion realizada con exito",
+     *     )
+     * )
+     */
+
     public function permisos(Request $request){
         try {
             DB::beginTransaction();
@@ -316,10 +347,10 @@ class RolController extends Controller
      *     ),
      *      @OA\Response(
      *          response=404,
-     *          description="Sede no encontrado"
+     *          description="Rol no encontrado"
      *      )
      *  )
- */
+     */
 
     public function delete($id)
     {
