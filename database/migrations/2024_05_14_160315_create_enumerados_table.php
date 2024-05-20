@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('enumerados', function (Blueprint $table) {
             $table->id();
             $table->integer('id_tipo_enumerado');
-            $table->integer('descripcion');
+            $table->string('descripcion');
             $table->boolean('estado')->nullable(false)->default(0);
             $table->timestamps();
             
