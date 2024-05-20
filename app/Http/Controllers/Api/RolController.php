@@ -122,7 +122,7 @@ class RolController extends Controller
 
             $codigoPrefix = 'RO0';
             $nombreRol = $request->input('nombre_rol');
-            $statement = DB::connection()->getPdo()->prepare('SELECT last_value FROM roles_id_seq');
+            $statement = DB::connection()->getPdo()->prepare('SELECT nextval(\'roles_id_seq\')');
             $statement->execute();
             $idRol = $statement->fetchColumn();
 
