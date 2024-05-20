@@ -6,7 +6,7 @@
     },
     "servers": [
         {
-            "url": "http://leograf-siga-backend.test:8085"
+            "url": "http://leograf-siga-backend.test"
         }
     ],
     "paths": {

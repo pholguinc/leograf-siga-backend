@@ -29,6 +29,7 @@ return new class extends Migration
             $table->integer('id_estado_civil')->nullable();
             $table->string('direccion')->nullable();
             $table->boolean('estado')->nullable()->default(0);
+            $table->integer('login_attempts')->nullable();
         
             $table->timestamps();
         });

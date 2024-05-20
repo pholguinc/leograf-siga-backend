@@ -13,7 +13,7 @@ use Illuminate\Routing\Controller as BaseController;
 *             version="1.0",
 * )
 *
-* @OA\Server(url="http://leograf-siga-backend.test:8085")
+* @OA\Server(url="http://leograf-siga-backend.test")
 */
 
 class Controller extends BaseController
