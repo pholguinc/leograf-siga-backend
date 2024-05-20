@@ -21,6 +21,7 @@ class UserSeeder extends Seeder
                 'nombres' => 'Pedro Alejandro',
                 'apellidos' => 'Holguin Cueva',
                 'email' => 'holguinpedro90@gmail.com',
+                'password' => bcrypt('123456'),
                 'rol_id' => null,
                 'fecha_nacimiento' => DB::raw('CURRENT_TIMESTAMP'),
                 'id_genero' => 11001,
