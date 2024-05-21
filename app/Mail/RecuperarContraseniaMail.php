@@ -30,6 +30,7 @@ class RecuperarContraseniaMail extends Mailable
         return new Envelope(
             from: new Address('holguinpedro90@gmail.com', 'Pedro Holguin'),
             subject: 'Recuperar Contrasenia Mail',
+        
         );
     }
 
