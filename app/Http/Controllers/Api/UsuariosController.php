@@ -14,6 +14,40 @@ class UsuariosController extends Controller
 {
     use ResponseTrait;
 
+    public function index(Request $request)
+    {
+        try {
+            $offset = $request->input('offset', 0);
+            $limit = $request->input('limit', 10);
+            $nombreSede = $request->input('nombre');
+            $estadoSede = $request->input('estado');
+
+            $query = DB::select('SELECT * FROM listar_sedes_grid_list(:offset, :limit, :nombre, :estado);', [
+                'offset' => $offset,
+                'limit' => $limit,
+                'nombre' => $nombreSede ? "%{$nombreSede}%" : null,
+                'estado' => $estadoSede
+            ]);
+
+            $data = [
+                'data' => $query,
+                'pagination' => [
+                    'total' => count($query),
+                    'current_page'
+                    => (int) ceil($offset / $limit),
+                    'per_page' => $limit,
+                    'last_page' => (int) ceil(count($query) / $limit),
+                    'from' => $offset + 1,
+                    'to' => min($offset + $limit, count($query)),
+                ]
+            ];
+
+            return $this->responseJson($data);
+        } catch (Throwable $e) {
+            throw $e;
+        }
+    }
+
     public function store(Request $request)
     {
         try {
@@ -48,8 +82,6 @@ class UsuariosController extends Controller
             $query->bindParam(':id_estado_civil', $id_estado_civil);
             $query->bindParam(':direccion', $direccion);
 
-
-    
 
             $user = new User();
 

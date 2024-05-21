@@ -16,6 +16,32 @@ class MenuController extends Controller
 {
     use ResponseTrait;
 
+
+    public function update(Request $request, $id)
+    {
+        try {
+            DB::beginTransaction();
+
+            $menus = Menu::find($id)->first();
+
+            if (!$menus) {
+                return $this->responseErrorJson('El registro no fue encontrado');
+            }
+
+            $query = DB::select('SELECT menus_list_update(:id_menu, :menu, :modulo_id)', [
+                ':id_menu' => $id,
+                ':menu' => $request->input('nombre_menu'),
+                ':modulo_id' => $request->input('id_modulo'),
+            ]);
+
+            DB::commit();
+            return $this->responseJson($query);
+        } catch (Throwable $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+
     /**
      * Función para crear un nuevo menu
      * @OA\Post (

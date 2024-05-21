@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Throwable;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -26,36 +27,41 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         try {
-            if ($request->isJson() || $request->wantsJson() || $request->ajax()) {
+            if ($request->isJson() or $request->wantsJson() or $request->ajax()) {
+                // Obtener las credenciales del request
                 $credentials = $request->only('email', 'password');
                 $credentials['estado'] = true;
 
-                if (!filter_var($credentials['email'], FILTER_VALIDATE_EMAIL)) {
-                    return $this->responseErrorJson('Invalid email format.', 400);
+                if ($request->input('captcha') !== $request->input('confirm-captcha')) {
+                    return $this->responseErrorJson('Los campos de captcha no coinciden.', 422);
                 }
 
-                $user = User::where('email', $credentials['email'])
-                ->where('estado', true)
-                    ->first();
+                // Verificar si el usuario está bloqueado
+                $blockTime = now()->subMinute(); // Timestamp actual menos 1 minuto
+                $cacheKey = 'login_attempts_' . $request->ip();
+                $failedAttempts = Cache::get($cacheKey, 0);
+                $lastAttemptTime = Cache::get($cacheKey . '_time', null);
 
-                if (!$user) {
-                    $user = User::where('email', $credentials['email'])->first(); 
-                    if ($user) {
-                        $user->increment('login_attempts'); 
-                    }
-                    return $this->responseErrorJson('Invalid credentials.', 401);
+                if ($failedAttempts >= 6 && $lastAttemptTime && $lastAttemptTime > $blockTime) {
+                    return $this->responseErrorJson('Demasiados intentos fallidos. Intente nuevamente más tarde.', 403);
                 }
 
-                if (Auth::guard('api')->attempt($credentials, [], $this->shouldLockout($user))) {
-                    $user->token()->delete();
-                    return $this->respondWithToken($user->createToken('api_token'));
+                // Intentar autenticar al usuario
+                $token = Auth::guard('api')->attempt($credentials);
+
+                if ($token) {
+                    // Si la autenticación es exitosa, restablecer el contador de intentos fallidos
+                    Cache::forget($cacheKey);
+                    Cache::forget($cacheKey . '_time');
+                    return $this->respondWithToken($token);
                 }
 
-                if ($this->shouldLockout($user)) {
-                    return $this->responseErrorJson('Excediste el número de intentos. Prueba nuevamente en 5 minutos.', 403);
-                }
+                // Incrementar el contador de intentos fallidos y registrar la marca de tiempo del último intento
+                $failedAttempts++;
+                Cache::put($cacheKey, $failedAttempts, now()->addMinutes(1));
+                Cache::put($cacheKey . '_time', now(), now()->addMinutes(1));
 
-                return $this->responseErrorJson('Credenciales Inválidas.', 401);
+                return $this->responseErrorJson('Credenciales inválidas', 401);
             }
 
             return $this->responseFormatInvalid();
@@ -64,22 +70,8 @@ class AuthController extends Controller
         }
     }
 
-    protected function shouldLockout(User $user)
-    {
-        $loginAttempts = $user->login_attempts;
 
-        $loginAttempts++;
 
-        $user->login_attempts = $loginAttempts;
-        $user->save();
-
-        if ($loginAttempts >= config('auth.api.max_attempts', 6)) {
-
-            return true;
-        }
-
-        return false; 
-    }
 
     protected function respondWithToken($token)
     {
@@ -90,7 +82,7 @@ class AuthController extends Controller
             'token_type'            => 'bearer',
             'expires_in'            => JWTAuth::factory()->getTTL() * 60,
             'usuario'               => new UserAuthResource($user),
- 
+
         ]);
     }
 
@@ -106,6 +98,4 @@ class AuthController extends Controller
             throw $e;
         }
     }
-
-
 }

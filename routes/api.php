@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\MenuController;
 use App\Http\Controllers\Api\ModulosController;
 use App\Http\Controllers\Api\RolController;
@@ -89,6 +90,7 @@ Route::controller((SubmenuController::class))->prefix('submenus')->name('submenu
     Route::put('/{id}', 'update')->name('editar');
     Route::delete('/{id}', 'delete')->name('eliminar');
 });
+
 
 /*Endpoints de SubMenus */
 
