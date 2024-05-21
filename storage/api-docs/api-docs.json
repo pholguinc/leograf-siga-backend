@@ -10,6 +10,62 @@
         }
     ],
     "paths": {
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "Login"
+                ],
+                "summary": "Función para logease al sistema",
+                "operationId": "AuthLogin",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "captcha": {
+                                        "type": "string"
+                                    },
+                                    "confirm-captcha": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Se a logeado correctamente al sistema, bienvenido"
+                    }
+                }
+            }
+        },
+        "/api/auth/logout": {
+            "post": {
+                "tags": [
+                    "Login"
+                ],
+                "operationId": "AuthLogout",
+                "responses": {
+                    "200": {
+                        "description": "Cerrastes sesion correctamente."
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
         "/api/menus": {
             "get": {
                 "tags": [
@@ -824,11 +880,52 @@
                 "tags": [
                     "Submenus"
                 ],
-                "summary": "Función para listar todos modulos",
+                "summary": "Función para listar todas las sedes",
                 "operationId": "listSubmenus",
                 "responses": {
                     "200": {
-                        "description": "Peticion realizada con exito"
+                        "description": "Peticion realizada con exito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "rows": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "offset": {
+                                                        "type": "number",
+                                                        "example": "0"
+                                                    },
+                                                    "limit": {
+                                                        "type": "number",
+                                                        "example": "0"
+                                                    },
+                                                    "submenu_nombre": {
+                                                        "type": "string",
+                                                        "example": "string"
+                                                    },
+                                                    "id_modulo": {
+                                                        "type": "integer",
+                                                        "example": 0
+                                                    },
+                                                    "id_menu": {
+                                                        "type": "integer",
+                                                        "example": 0
+                                                    },
+                                                    "estado": {
+                                                        "type": "boolean",
+                                                        "example": "true"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -849,10 +946,10 @@
                                         "type": "string",
                                         "example": "Submenu_nuevo"
                                     },
-                                    "estado": {
-                                        "type": "boolean"
-                                    },
                                     "id_menu": {
+                                        "type": "number"
+                                    },
+                                    "id_modulo": {
                                         "type": "number"
                                     }
                                 },
@@ -999,6 +1096,319 @@
                         "description": "Submenu no encontrado"
                     }
                 }
+            }
+        },
+        "/api/usuarios": {
+            "get": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Función para listar todos los usuarios",
+                "operationId": "listUsuarios",
+                "responses": {
+                    "200": {
+                        "description": "Peticion realizada con exito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "rows": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "offset": {
+                                                        "type": "number",
+                                                        "example": "0"
+                                                    },
+                                                    "limit": {
+                                                        "type": "number",
+                                                        "example": "0"
+                                                    },
+                                                    "nombre": {
+                                                        "type": "string",
+                                                        "example": "string"
+                                                    },
+                                                    "estado": {
+                                                        "type": "boolean",
+                                                        "example": "true"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Función para crear un nuevo usuario",
+                "operationId": "InsertUsuarios",
+                "requestBody": {
+                    "description": "Datos de la sede a actualizar",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id_tipo_documento": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "numero_documento": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "nombres": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "apellidos": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "example@email.com"
+                                    },
+                                    "fecha_nacimiento": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "id_genero": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "id_codigo_pais": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "celular": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "id_estado_civil": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "direccion": {
+                                        "type": "string",
+                                        "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Peticion realizada con exito"
+                    }
+                }
+            }
+        },
+        "/api/usuarios/{id}": {
+            "get": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Función para ver detalle por Id",
+                "operationId": "SelectUsuariosOfId",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id_tipo_documento": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "numero_documento": {
+                                            "type": "string",
+                                            "example": "string"
+                                        },
+                                        "nombres": {
+                                            "type": "string",
+                                            "example": "string"
+                                        },
+                                        "apellidos": {
+                                            "type": "string",
+                                            "example": "string"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "example@email.com"
+                                        },
+                                        "fecha_nacimiento": {
+                                            "type": "string",
+                                            "format": "date"
+                                        },
+                                        "id_genero": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "id_codigo_pais": {
+                                            "type": "string",
+                                            "example": "string"
+                                        },
+                                        "celular": {
+                                            "type": "string",
+                                            "example": "string"
+                                        },
+                                        "id_estado_civil": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "direccion": {
+                                            "type": "string",
+                                            "example": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Función para actulizar los modulos",
+                "operationId": "UpdateUsuario",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del usuario a actualizar",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Datos del usuario a actualizar",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id_tipo_documento": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "numero_documento": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "nombres": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "apellidos": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "example@email.com"
+                                    },
+                                    "fecha_nacimiento": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "id_genero": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "id_codigo_pais": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "celular": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "id_estado_civil": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "direccion": {
+                                        "type": "string",
+                                        "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Sede actualizada exitosamente"
+                    },
+                    "404": {
+                        "description": "Sede no encontrada"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Función para cambiar de estado",
+                "operationId": "DeleteUsuario",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Peticion realizada con exito"
+                    },
+                    "404": {
+                        "description": "Sede no encontrado"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearer": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
             }
         }
     }

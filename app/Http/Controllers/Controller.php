@@ -14,7 +14,13 @@ use Illuminate\Routing\Controller as BaseController;
 * )
 *
 * @OA\Server(url="http://leograf-siga-backend.test")
-*/
+*
+* @OAS\SecurityScheme(
+ *      securityScheme="bearerAuth",
+ *      type="http",
+ *      scheme="bearer"
+ * )
+ */
 
 class Controller extends BaseController
 {

@@ -16,14 +16,53 @@ class SubmenuController extends Controller
     use ResponseTrait;
 
     /**
-     * Función para listar todos modulos
-     * @OA\Get (
+     * Función para listar todas las sedes
+     * @OA\Get(
      *     path="/api/submenus",
      *     tags={"Submenus"},
      *     operationId="listSubmenus",
      *     @OA\Response(
      *         response=200,
      *         description="Peticion realizada con exito",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 type="array",
+     *                 property="rows",
+     *                 @OA\Items(
+     *                     type="object",
+     *                     @OA\Property(
+     *                         property="offset",
+     *                         type="number",
+     *                         example="0"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="limit",
+     *                         type="number",
+     *                         example="0"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="submenu_nombre",
+     *                         type="string",
+     *                         example="string"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="id_modulo",
+     *                         type="integer",
+     *                         example=0
+     *                     ),
+     *                     @OA\Property(
+     *                         property="id_menu",
+     *                         type="integer",
+     *                         example=0
+     *                     ),
+     *                     @OA\Property(
+     *                         property="estado",
+     *                         type="boolean",
+     *                         example="true"
+     *                     )
+     *                 )
+     *             )
+     *         )
      *     )
      * )
      */
@@ -76,8 +115,8 @@ class SubmenuController extends Controller
      *          description="Datos del submenus a actualizar",
      *          @OA\JsonContent(
      *              @OA\Property(property="nombre_submenu", type="string", example="Submenu_nuevo"),
-     *              @OA\Property(property="estado", type="boolean"),
-     *              @OA\Property(property="id_menu", type="number")
+     *              @OA\Property(property="id_menu", type="number"),
+     *              @OA\Property(property="id_modulo", type="number"),
      *
      *          )
      *     ),
