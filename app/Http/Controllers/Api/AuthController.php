@@ -24,6 +24,27 @@ class AuthController extends Controller
         $this->middleware('jwt.auth', ['except' => ['login']]);
     }
 
+    /**  Función para logease al sistema
+     *  @OA\Post (
+     *      path="/api/auth/login",
+     *      tags={"Login"},
+     *      operationId="AuthLogin",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              @OA\Property(property="email", type="string"),
+     *              @OA\Property(property="password", type="string"),
+     *              @OA\Property(property="captcha", type="string"),
+     *              @OA\Property(property="confirm-captcha", type="string"),
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Se a logeado correctamente al sistema, bienvenido",
+     *      ),
+     *  )
+     */
+
     public function login(LoginRequest $request)
     {
         try {
@@ -85,6 +106,19 @@ class AuthController extends Controller
 
         ]);
     }
+
+    /**
+     *  @OA\Post(
+     *      path="/api/auth/logout",
+     *      tags={"Login"},
+     *      security={{"bearer": {}}},
+     *      operationId="AuthLogout",
+     *   @OA\Response(
+     *         response=200,
+     *         description="Cerrastes sesion correctamente.",
+     *     )
+     *  ),
+     */
 
     public function logout(Request $request)
     {
