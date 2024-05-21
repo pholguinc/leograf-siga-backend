@@ -7,8 +7,10 @@ use App\Http\Controllers\Api\RolController;
 use App\Http\Controllers\Api\SedesController;
 use App\Http\Controllers\Api\SubmenuController;
 use App\Http\Controllers\Api\UsuariosController;
+use App\Mail\RecuperarContraseniaMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -106,4 +108,11 @@ Route::controller((UsuariosController::class))->prefix('usuarios')->name('usuari
 });
 
 /*Endpoints de Usuarios */
+
+Route::get('recuperar-contrasenia', function(){
+    Mail::to('holguinpedro90@gmail.com')
+    ->send(new RecuperarContraseniaMail);
+
+    return 'Mensaje enviado';
+})->name('contrasenia');
 
