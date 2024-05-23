@@ -22,3 +22,8 @@ Route::get('/', function () {
 Route::get('/contrasenia', function () {
     return view('emails.recuperar-contrasenia');
 });
+
+Route::get('/recuperar-contrasenia', function () {
+    return view('emails.registro-recuperar-contrasenia');
+});
+

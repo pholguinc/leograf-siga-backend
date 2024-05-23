@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid');
             $table->integer('id_tipo_documento');
             $table->string('numero_documento');
             $table->string('nombres');
@@ -32,7 +33,6 @@ return new class extends Migration
             $table->string('direccion')->nullable();
             $table->boolean('estado')->nullable()->default(0);
             $table->integer('login_attempts')->nullable();
-            //$table->date('blocked_at')->nullable();
         
             $table->timestamps();
         });

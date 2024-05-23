@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+
 
 class UserSeeder extends Seeder
 {
@@ -16,6 +18,7 @@ class UserSeeder extends Seeder
 
         $usersData = [
             [
+                'uuid' =>Str::uuid(),
                 'id_tipo_documento' => 10001,
                 'numero_documento' => '123456789',
                 'nombres' => 'Pedro Alejandro',

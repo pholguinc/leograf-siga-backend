@@ -105,14 +105,23 @@ Route::controller((UsuariosController::class))->prefix('usuarios')->name('usuari
     Route::get('/{id}', 'show')->name('ver');
     Route::put('/{id}', 'update')->name('editar');
     Route::delete('/{id}', 'delete')->name('eliminar');
+    Route::post('/recuperar-contrasenia', 'recuperarContrasenia')->name('recuperar-contrasenia');
+    Route::post('/solicitar-nueva-contrasenia', 'solicitudNuevaContrasenia')->name('solicitar-nueva-contrasenia');
+  
+  
+
 });
 
 /*Endpoints de Usuarios */
 
-Route::get('recuperar-contrasenia', function(){
-    Mail::to('holguinpedro90@gmail.com')
-    ->send(new RecuperarContraseniaMail);
 
-    return 'Mensaje enviado';
-})->name('contrasenia');
 
+// Route::group(['prefix' => 'email'], function () {
+//     Route::get('recuperar-contrasenia', function () {
+//         Mail::to('holguinpedro90@gmail.com')
+//             ->send(new RecuperarContraseniaMail);
+
+//         return 'Mensaje enviado';
+//     })->name('contrasenia');
+
+// });

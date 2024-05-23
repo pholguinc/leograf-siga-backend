@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use PDO;
 use Throwable;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -132,4 +133,6 @@ class AuthController extends Controller
             throw $e;
         }
     }
+
+   
 }

@@ -3,12 +3,21 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
+use App\Mail\RecuperarContraseniaMail;
+use App\Mail\RegistroRecuperarContraseniaMail;
+use App\Mail\SolicitudNuevaContraseniaMail;
 use App\Models\User;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use PDO;
 use Throwable;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Payload;
+use Illuminate\Support\Str;
+use Tymon\JWTAuth\Facades\JWTFactory;
 
 class UsuariosController extends Controller
 {
@@ -64,7 +73,7 @@ class UsuariosController extends Controller
             $nombreSede = $request->input('nombre');
             $estadoSede = $request->input('estado');
 
-            $query = DB::select('SELECT * FROM listar_sedes_grid_list(:offset, :limit, :nombre, :estado);', [
+            $query = DB::select('SELECT * FROM listar_usuarios_grid_list(:offset, :limit, :nombre, :estado);', [
                 'offset' => $offset,
                 'limit' => $limit,
                 'nombre' => $nombreSede ? "%{$nombreSede}%" : null,
@@ -132,11 +141,12 @@ class UsuariosController extends Controller
             $email = $request->input('email');
             $fecha_nacimiento = $request->input('fecha_nacimiento');
             $id_genero = $request->input('id_genero');
-            $id_codigo_pais =  $request ->input('id_codigo_pais');
+            $id_codigo_pais =  $request->input('id_codigo_pais');
             $celular =  $request->input('celular');
 
-            $id_estado_civil = $request ->input('id_estado_civil');
-            $direccion = $request-> input('direccion');
+            $id_estado_civil = $request->input('id_estado_civil');
+            $direccion = $request->input('direccion');
+            
 
 
 
@@ -276,7 +286,7 @@ class UsuariosController extends Controller
             $query = DB::select('SELECT usuarios_list_update(:id_usuario, :id_tipo_documento, :numero_documento, :nombres, :apellidos, :email, :rol_id, :fecha_nacimiento, :id_genero, :id_codigo_pais, :celular, :id_estado_civil, :direccion)', [
                 ':id_usuario' => $id,
                 ':id_tipo_documento' => $request->input('id_tipo_documento'),
-                ':numero_documento'=> $request->input('numero_documento'),
+                ':numero_documento' => $request->input('numero_documento'),
                 ':nombres' => $request->input('nombres'),
                 ':apellidos' => $request->input('apellidos'),
                 ':email' => $request->input('email'),
@@ -320,7 +330,7 @@ class UsuariosController extends Controller
      *          description="Sede no encontrado"
      *      )
      *  )
- */
+     */
 
     public function delete($id)
     {
@@ -337,4 +347,12 @@ class UsuariosController extends Controller
             throw $e;
         }
     }
+
+
+    
+
+   
+
+
+
 }

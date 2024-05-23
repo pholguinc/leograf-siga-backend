@@ -5,22 +5,19 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-use function Laravel\Prompts\password;
-
-class RecuperarContraseniaMail extends Mailable
+class SolicitudNuevaContraseniaMail extends Mailable
 {
     use Queueable, SerializesModels;
+
+    public $userData, $data;
 
     /**
      * Create a new message instance.
      */
-    public $data, $userData;
-
     public function __construct($data, $userData)
     {
         $this->data = $data;
@@ -32,11 +29,9 @@ class RecuperarContraseniaMail extends Mailable
      */
     public function envelope(): Envelope
     {
-        $appName = config('app.name');
         return new Envelope(
-            from: new Address('holguinpedro90@gmail.com', 'Pedro Holguin'),
-            subject: "{$appName} - Reestablecimiento de contraseña"
-        
+            subject: 'Solicitud nueva contraseñ Contrasenia Mail',
+            
         );
     }
 
@@ -45,10 +40,8 @@ class RecuperarContraseniaMail extends Mailable
      */
     public function content(): Content
     {
-        
         return new Content(
-            view: 'emails.recuperar-contrasenia',
-            
+            view:'emails.solcitud-nueva-contrasenia',
         );
     }
 
@@ -61,6 +54,4 @@ class RecuperarContraseniaMail extends Mailable
     {
         return [];
     }
-
-    
 }
