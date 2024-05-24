@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Menu\MenuStoreRequest;
+use App\Http\Requests\Menu\MenuUpdateRequest;
 use App\Http\Resources\MenuResource;
 use App\Models\Menu;
 use App\Traits\ResponseTrait;
@@ -67,35 +68,6 @@ class MenuController extends Controller
     }
 
 
-    public function update(Request $request, $id)
-    {
-        try {
-            DB::beginTransaction();
-            $user = Auth::guard('api')->user();
-            if (!$user) {
-                return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
-            }
-
-            $menus = Menu::find($id)->first();
-
-            if (!$menus) {
-                return $this->responseErrorJson('El registro no fue encontrado');
-            }
-
-            $query = DB::select('SELECT menus_list_update(:id_menu, :menu, :modulo_id)', [
-                ':id_menu' => $id,
-                ':menu' => $request->input('nombre_menu'),
-                ':modulo_id' => $request->input('id_modulo'),
-            ]);
-
-            DB::commit();
-            return $this->responseJson($query);
-        } catch (Throwable $e) {
-            DB::rollBack();
-            throw $e;
-        }
-    }
-
     /**
      * Función para crear un nuevo menu
      * @OA\Post (
@@ -117,7 +89,7 @@ class MenuController extends Controller
      * )
      */
 
-    public function store(Request $request)
+    public function store(MenuStoreRequest $request)
     {
         try {
             DB::beginTransaction();
@@ -128,7 +100,7 @@ class MenuController extends Controller
             }
 
             $codigoPrefix = 'ME0';
-            $nombreMenu = $request->input('nombre_menu');
+            $nombreMenu = $request->input('nombre');
             $moduloId = $request->input('id_modulo');
             $statement = DB::connection()->getPdo()->prepare('SELECT nextval(\'menus_id_seq\')');
             $statement->execute();
@@ -136,7 +108,6 @@ class MenuController extends Controller
 
             $moduloAliasQuery = DB::table('modulos')->where('id', $moduloId)->select('alias')->first();
             $moduloAlias = $moduloAliasQuery ? $moduloAliasQuery->alias : '';
-
 
 
             $codigoMenu = $moduloAlias . $moduloId . $codigoPrefix . $idMenu;
@@ -158,6 +129,37 @@ class MenuController extends Controller
 
 
             return $this->responseJson($sedeData);
+        } catch (Throwable $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+
+
+
+    public function update(MenuUpdateRequest $request, $id)
+    {
+        try {
+            DB::beginTransaction();
+            $user = Auth::guard('api')->user();
+            if (!$user) {
+                return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
+            }
+
+            $menus = Menu::find($id)->first();
+
+            if (!$menus) {
+                return $this->responseErrorJson('El registro no fue encontrado');
+            }
+
+            $query = DB::select('SELECT menus_list_update(:id_menu, :nombre, :modulo_id)', [
+                ':id_menu' => $id,
+                ':nombre' => $request->input('nombre'),
+                ':modulo_id' => $request->input('id_modulo'),
+            ]);
+
+            DB::commit();
+            return $this->responseJson($query);
         } catch (Throwable $e) {
             DB::rollBack();
             throw $e;

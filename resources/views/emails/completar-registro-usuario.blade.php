@@ -18,6 +18,9 @@
             margin: 0;
             font-family: "Montserrat", sans-serif;
         }
+        a{
+            text-decoration: none;
+        }
 
         .page {
             text-align: center;
@@ -124,7 +127,7 @@
         </div>
 
         <div class="email-content">
-            <p>Hola {{$data['numero_documento']}}</p>
+            <p>Hola {{$data['nombres']}}</p>
             <br>
             <p>Para brindarle sus credenciales correspondientes al sistema, haga clic en el siguiente botón para
                 confrmar su registro:</p>

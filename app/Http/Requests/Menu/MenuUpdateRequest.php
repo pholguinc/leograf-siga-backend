@@ -13,7 +13,7 @@ class MenuUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,9 +24,8 @@ class MenuUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre'            => 'required|min:3|unique:sedes',
+            'nombre'            => 'required|min:3',
             'id_modulo'        => 'required',
-            'estado'                => 'required'
         ];
     }
 

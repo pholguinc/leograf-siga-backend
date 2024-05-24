@@ -24,7 +24,7 @@ class MenuStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre'            => 'required|min:3|unique:menu',
+            'nombre'            => 'required|min:3|unique:menus',
             'id_modulo'        => 'required',
             'estado'                => 'required'
         ];

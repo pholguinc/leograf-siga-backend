@@ -168,8 +168,6 @@ class UsuariosController extends Controller
             $captcha = $request->input('captcha');
 
 
-
-
             $query = DB::connection()->getPdo()->prepare('SELECT * FROM usuarios_list_create(:id_tipo_documento,:numero_documento,
             :nombres, :apellidos, :email, :fecha_nacimiento, :id_genero, :id_codigo_pais, :celular, :id_estado_civil, :direccion, :captcha)');
             $query->bindParam(':id_tipo_documento', $idTipoDocumento);
@@ -186,13 +184,12 @@ class UsuariosController extends Controller
             $query->bindParam(':captcha', $captcha);
 
 
-            Mail::to('holguinpedro90@gmail.com')->send(new CompletarRegistroUsuarioMail($request->all()));
-
-
             $user = new User();
 
             $query->execute();
             $userData = $query->fetch(PDO::FETCH_ASSOC);
+
+            Mail::to('holguinpedro90@gmail.com')->send(new CompletarRegistroUsuarioMail($request->all()));
 
             DB::commit();
 
