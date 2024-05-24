@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\EmailController;
 use App\Http\Controllers\Api\MenuController;
 use App\Http\Controllers\Api\ModulosController;
 use App\Http\Controllers\Api\RolController;
@@ -105,9 +106,6 @@ Route::controller((UsuariosController::class))->prefix('usuarios')->name('usuari
     Route::get('/{id}', 'show')->name('ver');
     Route::put('/{id}', 'update')->name('editar');
     Route::delete('/{id}', 'delete')->name('eliminar');
-    Route::post('/recuperar-contrasenia', 'recuperarContrasenia')->name('recuperar-contrasenia');
-    Route::post('/solicitar-nueva-contrasenia', 'solicitudNuevaContrasenia')->name('solicitar-nueva-contrasenia');
-  
   
 
 });
@@ -115,13 +113,17 @@ Route::controller((UsuariosController::class))->prefix('usuarios')->name('usuari
 /*Endpoints de Usuarios */
 
 
+//*Endpoints de Email */
 
-// Route::group(['prefix' => 'email'], function () {
-//     Route::get('recuperar-contrasenia', function () {
-//         Mail::to('holguinpedro90@gmail.com')
-//             ->send(new RecuperarContraseniaMail);
+Route::controller((EmailController::class))->prefix('emails')->name('emails.')->group(function () {
+    Route::post('/recuperar-contrasenia', 'recuperarContrasenia')->name('recuperar-contrasenia');
+    Route::post('/solicitar-nueva-contrasenia', 'solicitudNuevaContrasenia')->name('solicitar-nueva-contrasenia');
+    Route::post('/confirmar-registro', 'confirmarRegistro')->name('confirmar-registro');
+});
 
-//         return 'Mensaje enviado';
-//     })->name('contrasenia');
+/*Endpoints de Email */
 
-// });
+
+
+
+

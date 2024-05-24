@@ -22,7 +22,6 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->string('captcha');
-            $table->string('confirm-captcha');
             $table->foreignId('rol_id')->nullable()->constrained('roles');
             $table->rememberToken();
             $table->date('fecha_nacimiento')->nullable();

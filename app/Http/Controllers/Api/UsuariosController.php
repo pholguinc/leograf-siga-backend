@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Mail\CompletarRegistroUsuarioMail;
 use App\Mail\RecuperarContraseniaMail;
 use App\Mail\RegistroRecuperarContraseniaMail;
 use App\Mail\SolicitudNuevaContraseniaMail;
@@ -70,14 +71,16 @@ class UsuariosController extends Controller
         try {
             $offset = $request->input('offset', 0);
             $limit = $request->input('limit', 10);
-            $nombreSede = $request->input('nombre');
-            $estadoSede = $request->input('estado');
+            $id_tipo_documento = $request->input('id_tipo_documento');
+            $numeroDocumento = $request->input('numero_documento');
+            $nombres = $request->input('nombres');
+            $apellidos = $request->input('apellidos');
+            $estadoUsuario = $request->input('estado');
 
-            $query = DB::select('SELECT * FROM listar_usuarios_grid_list(:offset, :limit, :nombre, :estado);', [
+            $query = DB::select('SELECT * FROM listar_usuarios_grid_list(:offset, :limit, :id_tipo_documento);', [
                 'offset' => $offset,
                 'limit' => $limit,
-                'nombre' => $nombreSede ? "%{$nombreSede}%" : null,
-                'estado' => $estadoSede
+                'id_tipo_documento' => $id_tipo_documento,
             ]);
 
             $data = [
@@ -146,12 +149,13 @@ class UsuariosController extends Controller
 
             $id_estado_civil = $request->input('id_estado_civil');
             $direccion = $request->input('direccion');
+            $captcha = $request->input('captcha');
             
 
 
 
             $query = DB::connection()->getPdo()->prepare('SELECT * FROM usuarios_list_create(:id_tipo_documento,:numero_documento,
-            :nombres, :apellidos, :email, :fecha_nacimiento, :id_genero, :id_codigo_pais, :celular, :id_estado_civil, :direccion)');
+            :nombres, :apellidos, :email, :fecha_nacimiento, :id_genero, :id_codigo_pais, :celular, :id_estado_civil, :direccion, :captcha)');
             $query->bindParam(':id_tipo_documento', $idTipoDocumento);
             $query->bindParam(':numero_documento', $numeroDocumento);
             $query->bindParam(':nombres', $nombres);
@@ -163,6 +167,10 @@ class UsuariosController extends Controller
             $query->bindParam(':celular', $celular);
             $query->bindParam(':id_estado_civil', $id_estado_civil);
             $query->bindParam(':direccion', $direccion);
+            $query->bindParam(':captcha', $captcha);
+
+
+            Mail::to('holguinpedro90@gmail.com')->send(new CompletarRegistroUsuarioMail($request->all()));
 
 
             $user = new User();

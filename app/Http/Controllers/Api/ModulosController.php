@@ -123,11 +123,13 @@ class ModulosController extends Controller
             $codigoPrefix = 'MO';
             $nombreModulo = $request->input('nombre_modulo');
             $image_url = $request->input('image_url');
-            $statement = DB::connection()->getPdo()->prepare('SELECT last_value FROM modulos_id_seq');
+            $statement = DB::connection()->getPdo()->prepare('SELECT nextval(\'modulos_id_seq\')');
             $statement->execute();
             $idModulo = $statement->fetchColumn();
 
             $codigoModulo = $codigoPrefix . $idModulo;
+
+
 
 
             $query = DB::connection()->getPdo()->prepare('SELECT * FROM modulos_list_create(:id_modulo,:codigo,:nombre,:alias, :image_url)');

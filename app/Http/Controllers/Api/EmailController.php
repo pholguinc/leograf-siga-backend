@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\RecuperarContraseniaMail;
 use App\Mail\SolicitudNuevaContraseniaMail;
+use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -12,6 +14,7 @@ use Throwable;
 
 class EmailController extends Controller
 {
+    use ResponseTrait;
     public function solicitudNuevaContrasenia(Request $request)
     {
         try {
@@ -64,7 +67,7 @@ class EmailController extends Controller
             $userData =  $query[0];
 
 
-            Mail::to('holguinpedro90@gmail.com')->send(new RegistroRecuperarContraseniaMail($userData, $request->all()));
+            Mail::to('holguinpedro90@gmail.com')->send(new RecuperarContraseniaMail($userData, $request->all()));
 
 
 

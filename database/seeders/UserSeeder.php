@@ -26,7 +26,6 @@ class UserSeeder extends Seeder
                 'email' => 'holguinpedro90@gmail.com',
                 'password' => bcrypt('123456'),
                 'captcha' => '12ER',
-                'confirm-captcha' => '12ER',
                 'rol_id' => null,
                 'fecha_nacimiento' => DB::raw('CURRENT_TIMESTAMP'),
                 'id_genero' => 11001,

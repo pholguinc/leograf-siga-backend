@@ -14,11 +14,6 @@
             padding: 0;
         }
 
-        :root {
-            --clr-blue: #003152;
-            --lexicon: #E7EAEA;
-        }
-
         body {
             margin: 0;
             font-family: "Montserrat", sans-serif;
@@ -67,8 +62,7 @@
             margin: 0 auto 1em auto;
 
         }
-
-        .button-group {
+          .button-group {
             margin-top: 3em;
             display: flex;
             justify-content: center;
@@ -126,30 +120,21 @@
         </div>
 
         <div class="wrapper wrapper-dark">
-            <h4>SOLICITUD DE REESTABLECIMIENTO DE CONTRASEÑA</h4>
+            <h4>COMPLETA TU REGISTRO</h4>
         </div>
 
         <div class="email-content">
-            <p>Hola <Usuario>.</p>
+            <p>Hola {{$data['numero_documento']}}</p>
             <br>
-            <p>Alguien ha solicitado una nueva contraseña para la
-                siguiente cuenta en nuestro sistema LeoGraf:</p>
+            <p>Para brindarle sus credenciales correspondientes al sistema, haga clic en el siguiente botón para
+                confrmar su registro:</p>
             <br>
-            <p>Nombre de usuario: <Usuario>
-            </p>
-            <br>
-            <p>Si usted no hizo la solicitud, ignore este correo
-                electrónico.</p>
-            <br>
-
-            <p>Si quiere proceder, haga clic en el siguiente botón:</p>
-
+            <div class="button-group">
+                <a href="http://localhost:4200/auth/recuperar-contraseni" target="_blank""
+                    class="btn top-fill">Confirmar registro</a>
+            </div>
             <br>
            
-            <div class="button-group">
-                <a href="http://localhost:4200/auth/recuperar-contrasenia/{{$userData->uuid}}" target="_blank"" class="btn top-fill">Restablecer Contraseña</a>
-            </div>
-
             <p>Gracias.</p>
             <br>
             <p>Nota: Después de 24 horas recibido este correo, el
