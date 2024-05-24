@@ -11,6 +11,7 @@ use App\Mail\SolicitudNuevaContraseniaMail;
 use App\Models\User;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use PDO;
@@ -69,6 +70,11 @@ class UsuariosController extends Controller
     public function index(Request $request)
     {
         try {
+            $user = Auth::guard('api')->user();
+            if (!$user) {
+                return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
+            }
+            
             $offset = $request->input('offset', 0);
             $limit = $request->input('limit', 10);
             $id_tipo_documento = $request->input('id_tipo_documento');
