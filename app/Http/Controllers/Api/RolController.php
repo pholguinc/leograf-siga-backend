@@ -10,6 +10,7 @@ use App\Models\Rol;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use PDO;
 use Throwable;
@@ -63,6 +64,10 @@ class RolController extends Controller
     public function index(Request $request)
     {
         try {
+            $user = Auth::guard('api')->user();
+            if (!$user) {
+                return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
+            }
             $offset = $request->input('offset', 0);
             $limit = $request->input('limit', 10);
             $nombreRol = $request->input('rol_nombre');
@@ -119,6 +124,11 @@ class RolController extends Controller
     {
         try {
             DB::beginTransaction();
+
+            $user = Auth::guard('api')->user();
+            if (!$user) {
+                return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
+            }
 
             $codigoPrefix = 'RO0';
             $nombreRol = $request->input('nombre_rol');
@@ -184,6 +194,10 @@ class RolController extends Controller
     public function permisos(Request $request){
         try {
             DB::beginTransaction();
+            $user = Auth::guard('api')->user();
+            if (!$user) {
+                return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
+            }
             $rolId = $request->input('rol_id');
             $permisosIds = $request->input('permisos_ids');
 
@@ -259,6 +273,10 @@ class RolController extends Controller
     {
 
         try {
+            $user = Auth::guard('api')->user();
+            if (!$user) {
+                return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
+            }
             $query = DB::select('SELECT * FROM listar_roles_por_id_list(:id)', [':id' => $id]);
 
             if (empty($query)) {
@@ -309,6 +327,11 @@ class RolController extends Controller
         try {
             DB::beginTransaction();
 
+            $user = Auth::guard('api')->user();
+            if (!$user) {
+                return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
+            }
+
             $roles = Rol::find($id)->first();
 
             if (!$roles) {
@@ -355,6 +378,11 @@ class RolController extends Controller
     public function delete($id)
     {
         try {
+            $user = Auth::guard('api')->user();
+            if (!$user) {
+                return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
+            }
+            
             $query = DB::select('SELECT * FROM cambiar_estado_roles(:id)', [':id' => $id]);
 
             if (empty($query)) {

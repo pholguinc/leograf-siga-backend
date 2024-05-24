@@ -11,6 +11,7 @@ use App\Models\Sede;
 use App\Models\Sedes;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use PDO;
@@ -66,6 +67,12 @@ class SedesController extends Controller
     public function index(Request $request)
     {
         try {
+
+            $user = Auth::guard('api')->user();
+            if (!$user) {
+                return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
+            }
+
             $offset = $request->input('offset', 0);
             $limit = $request->input('limit', 10);
             $nombreSede = $request->input('nombre');
@@ -124,6 +131,11 @@ class SedesController extends Controller
     {
         try {
             DB::beginTransaction();
+
+            $user = Auth::guard('api')->user();
+            if (!$user) {
+                return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
+            }
 
             $codigoPrefix = 'SE0';
             $nombreSede = $request->input('nombre_sede');
@@ -188,6 +200,12 @@ class SedesController extends Controller
     {
 
         try {
+
+            $user = Auth::guard('api')->user();
+            if (!$user) {
+                return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
+            }
+
             $query = DB::select('SELECT * FROM listar_sedes_por_id_list(:id)', [':id' => $id]);
 
             if (empty($query)) {
@@ -239,6 +257,12 @@ class SedesController extends Controller
         try {
             DB::beginTransaction();
 
+            $user = Auth::guard('api')->user();
+            if (!$user) {
+                return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
+            }
+
+
             $sedes = Sede::find($id)->first();
 
             if (!$sedes) {
@@ -287,6 +311,11 @@ class SedesController extends Controller
     public function delete($id)
     {
         try {
+            $user = Auth::guard('api')->user();
+            if (!$user) {
+                return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
+            }
+            
             $query = DB::select('SELECT * FROM cambiar_estado_sedes(:id)', [':id' => $id]);
 
             if (empty($query)) {

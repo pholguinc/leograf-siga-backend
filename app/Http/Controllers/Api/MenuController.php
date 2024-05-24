@@ -8,6 +8,7 @@ use App\Http\Resources\MenuResource;
 use App\Models\Menu;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use PDO;
 use Throwable;
@@ -31,6 +32,10 @@ class MenuController extends Controller
 
     public function index(Request $request)
     {
+        $user = Auth::guard('api')->user();
+        if (!$user) {
+            return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
+        }
         $offset = $request->input('offset', 0);
         $limit = $request->input('limit', 10);
         $idModulo = $request->input('id_modulo');
@@ -45,7 +50,7 @@ class MenuController extends Controller
             'estado' => $estadoSede
         ]);
 
-       
+
         $data = [
             'data' => $query,
             'pagination' => [
@@ -66,6 +71,10 @@ class MenuController extends Controller
     {
         try {
             DB::beginTransaction();
+            $user = Auth::guard('api')->user();
+            if (!$user) {
+                return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
+            }
 
             $menus = Menu::find($id)->first();
 
@@ -113,6 +122,11 @@ class MenuController extends Controller
         try {
             DB::beginTransaction();
 
+            $user = Auth::guard('api')->user();
+            if (!$user) {
+                return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
+            }
+
             $codigoPrefix = 'ME0';
             $nombreMenu = $request->input('nombre_menu');
             $moduloId = $request->input('id_modulo');
@@ -125,7 +139,7 @@ class MenuController extends Controller
 
 
 
-            $codigoMenu = $moduloAlias . $moduloId. $codigoPrefix . $idMenu;
+            $codigoMenu = $moduloAlias . $moduloId . $codigoPrefix . $idMenu;
 
 
             $query = DB::connection()->getPdo()->prepare('SELECT * FROM menus_list_create(:id_menu,:nombre,:codigo,:alias, :moduloId)');
@@ -150,7 +164,7 @@ class MenuController extends Controller
         }
     }
 
-    
+
 
     /**
      * Función para ver detalles por menus
@@ -184,6 +198,10 @@ class MenuController extends Controller
     {
 
         try {
+            $user = Auth::guard('api')->user();
+            if (!$user) {
+                return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
+            }
             $query = DB::select('SELECT * FROM listar_menus_por_id_list(:id)', [':id' => $id]);
 
             if (empty($query)) {
@@ -224,6 +242,10 @@ class MenuController extends Controller
     public function delete($id)
     {
         try {
+            $user = Auth::guard('api')->user();
+            if (!$user) {
+                return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
+            }
             $query = DB::select('SELECT * FROM cambiar_estado_menus(:id)', [':id' => $id]);
 
             if (empty($query)) {

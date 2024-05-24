@@ -74,7 +74,7 @@ class UsuariosController extends Controller
             if (!$user) {
                 return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
             }
-            
+
             $offset = $request->input('offset', 0);
             $limit = $request->input('limit', 10);
             $id_tipo_documento = $request->input('id_tipo_documento');
@@ -147,6 +147,12 @@ class UsuariosController extends Controller
         try {
             DB::beginTransaction();
 
+            $user = Auth::guard('api')->user();
+            if (!$user) {
+                return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
+            }
+
+
             $idTipoDocumento = $request->input('id_tipo_documento');
             $numeroDocumento = $request->input('numero_documento');
             $nombres = $request->input('nombres');
@@ -160,7 +166,7 @@ class UsuariosController extends Controller
             $id_estado_civil = $request->input('id_estado_civil');
             $direccion = $request->input('direccion');
             $captcha = $request->input('captcha');
-            
+
 
 
 
@@ -236,6 +242,12 @@ class UsuariosController extends Controller
     {
 
         try {
+
+            $user = Auth::guard('api')->user();
+            if (!$user) {
+                return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
+            }
+
             $query = DB::select('SELECT * FROM listar_usuarios_por_id_list(:id)', [':id' => $id]);
 
             if (empty($query)) {
@@ -294,6 +306,12 @@ class UsuariosController extends Controller
     {
         try {
             DB::beginTransaction();
+
+            $user = Auth::guard('api')->user();
+            if (!$user) {
+                return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
+            }
+
 
             $usuarios = User::find($id)->first();
 
@@ -356,6 +374,11 @@ class UsuariosController extends Controller
     public function delete($id)
     {
         try {
+            $user = Auth::guard('api')->user();
+            if (!$user) {
+                return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
+            }
+
             $query = DB::select('SELECT * FROM cambiar_estado_usuario(:id)', [':id' => $id]);
 
             if (empty($query)) {
@@ -368,12 +391,4 @@ class UsuariosController extends Controller
             throw $e;
         }
     }
-
-
-    
-
-   
-
-
-
 }

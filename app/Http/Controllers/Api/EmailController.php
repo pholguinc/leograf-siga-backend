@@ -7,6 +7,7 @@ use App\Mail\RecuperarContraseniaMail;
 use App\Mail\SolicitudNuevaContraseniaMail;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use PDO;
@@ -19,6 +20,10 @@ class EmailController extends Controller
     {
         try {
             DB::beginTransaction();
+            $user = Auth::guard('api')->user();
+            if (!$user) {
+                return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
+            }
 
             $idTipoDocumento = $request->input('id_tipo_documento');
             $numeroDocumento = $request->input('numero_documento');
@@ -52,6 +57,10 @@ class EmailController extends Controller
     public function recuperarContrasenia(Request $request)
     {
         try {
+            $user = Auth::guard('api')->user();
+            if (!$user) {
+                return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
+            }
             $idUsuario = $request->input('id');
 
             $password = $request->input('password');

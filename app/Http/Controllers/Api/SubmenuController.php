@@ -7,6 +7,7 @@ use App\Models\Submenu;
 use App\Traits\ResponseTrait;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use PDO;
 use Throwable;
@@ -70,6 +71,11 @@ class SubmenuController extends Controller
     public function index(Request $request)
     {
         try {
+            $user = Auth::guard('api')->user();
+            if (!$user) {
+                return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
+            }
+            
             $offset = $request->input('offset', 0);
             $limit = $request->input('limit', 10);
             $nombreSubmenu = $request->input('submenu_nombre');
@@ -131,6 +137,11 @@ class SubmenuController extends Controller
     {
         try {
             DB::beginTransaction();
+
+            $user = Auth::guard('api')->user();
+            if (!$user) {
+                return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
+            }
 
             $codigoPrefix = 'SU0';
             $nombreSubMenu = $request->input('nombre_submenu');
@@ -203,6 +214,12 @@ class SubmenuController extends Controller
     {
 
         try {
+
+            $user = Auth::guard('api')->user();
+            if (!$user) {
+                return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
+            }
+
             $query = DB::select('SELECT * FROM listar_submenus_por_id_list(:id)', [':id' => $id]);
 
             if (empty($query)) {
@@ -243,6 +260,12 @@ class SubmenuController extends Controller
     public function delete($id)
     {
         try {
+
+            $user = Auth::guard('api')->user();
+            if (!$user) {
+                return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
+            }
+
             $query = DB::select('SELECT * FROM cambiar_estado_submenus(:id)', [':id' => $id]);
 
             if (empty($query)) {
@@ -293,6 +316,11 @@ class SubmenuController extends Controller
     {
         try {
             DB::beginTransaction();
+
+            $user = Auth::guard('api')->user();
+            if (!$user) {
+                return $this->responseErrorJson('Token de autorización no encontrado', [], 401);
+            }
 
             $submenus = Submenu::find($id)->first();
 
