@@ -74,8 +74,6 @@ class EmailController extends Controller
             $hashedPassword = bcrypt($password);
 
 
-
-
             $query = DB::connection()->getPdo()->prepare('SELECT * FROM usuarios_recuperar_contrasenia(:id,:password, :captcha)');
             $query->bindParam(':id', $idUsuario);
             $query->bindParam(':password', $hashedPassword);

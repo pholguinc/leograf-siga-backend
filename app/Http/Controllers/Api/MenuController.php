@@ -16,6 +16,51 @@ class MenuController extends Controller
 {
     use ResponseTrait;
 
+    /**
+     * Función para listar todos modulos
+     * @OA\Get (
+     *     path="/api/menus",
+     *     tags={"Menus"},
+     *     operationId="listMenus",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Peticion realizada con exito",
+     *     )
+     * )
+     */
+
+    public function index(Request $request)
+    {
+        $offset = $request->input('offset', 0);
+        $limit = $request->input('limit', 10);
+        $idModulo = $request->input('id_modulo');
+        $nombreSede = $request->input('nombre');
+        $estadoSede = $request->input('estado');
+
+        $query = DB::select('SELECT * FROM listar_menus_grid_list(:offset, :limit, :id_modulo, :nombre, :estado);', [
+            'offset' => $offset,
+            'id_modulo' => $idModulo,
+            'limit' => $limit,
+            'nombre' => $nombreSede,
+            'estado' => $estadoSede
+        ]);
+
+       
+        $data = [
+            'data' => $query,
+            'pagination' => [
+                'total' => count($query),
+                'current_page' => (int) $offset / $limit + 1,
+                'per_page' => $limit,
+                'last_page' => (int) ceil(count($query) / $limit),
+                'from' => $offset + 1,
+                'to' => min($offset + $limit, count($query)),
+            ]
+        ];
+
+        return response()->json($data);
+    }
+
 
     public function update(Request $request, $id)
     {
@@ -105,49 +150,7 @@ class MenuController extends Controller
         }
     }
 
-    /**
-     * Función para listar todos modulos
-     * @OA\Get (
-     *     path="/api/menus",
-     *     tags={"Menus"},
-     *     operationId="listMenus",
-     *     @OA\Response(
-     *         response=200,
-     *         description="Peticion realizada con exito",
-     *     )
-     * )
-     */
-
-    public function index(Request $request)
-    {
-        $offset = $request->input('offset', 0);
-        $limit = $request->input('limit', 10);
-        $idModulo = $request->input('id_modulo');
-        $nombreSede = $request->input('nombre');
-        $estadoSede = $request->input('estado');
-
-        $query = DB::select('SELECT * FROM listar_menus_grid_list(:offset, :limit, :id_modulo, :nombre, :estado);', [
-            'offset' => $offset,
-            'id_modulo' => $idModulo,
-            'limit' => $limit,
-            'nombre' => $nombreSede,
-            'estado' => $estadoSede
-        ]);
-
-        $data = [
-            'data' => $query,
-            'pagination' => [
-                'total' => count($query),
-                'current_page' => (int) $offset / $limit + 1,
-                'per_page' => $limit,
-                'last_page' => (int) ceil(count($query) / $limit),
-                'from' => $offset + 1,
-                'to' => min($offset + $limit, count($query)),
-            ]
-        ];
-
-        return response()->json($data);
-    }
+    
 
     /**
      * Función para ver detalles por menus

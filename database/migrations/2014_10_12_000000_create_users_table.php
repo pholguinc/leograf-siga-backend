@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
-            $table->string('captcha');
+            $table->string('captcha')->nullable();
             $table->foreignId('rol_id')->nullable()->constrained('roles');
             $table->rememberToken();
             $table->date('fecha_nacimiento')->nullable();

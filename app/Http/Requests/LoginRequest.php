@@ -27,7 +27,6 @@ class LoginRequest extends BaseFormRequest
             'email' => 'required|email',
             'password' => 'required',
             'captcha' => 'required',
-            'confirm-captcha' => 'required'
         ];
     }
 
@@ -38,7 +37,6 @@ class LoginRequest extends BaseFormRequest
             'email.email' => 'Ingrese un correo válido',
             'password.required' => 'El campo contraseña es obligatorio.',
             'captcha.required' => 'El campo captcha es obligatorio.',
-            'confirm-captcha.required' => 'El campo confirm-captcha es obligatorio.',
 
         ];
     }

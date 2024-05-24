@@ -301,13 +301,16 @@ class UsuariosController extends Controller
                 return $this->responseErrorJson('El registro no fue encontrado');
             }
 
-            $query = DB::select('SELECT usuarios_list_update(:id_usuario, :id_tipo_documento, :numero_documento, :nombres, :apellidos, :email, :rol_id, :fecha_nacimiento, :id_genero, :id_codigo_pais, :celular, :id_estado_civil, :direccion)', [
+            $hashedPassword = bcrypt($request->input('password'));
+
+            $query = DB::select('SELECT usuarios_list_update(:id_usuario, :id_tipo_documento, :numero_documento, :nombres, :apellidos, :email, :password, :rol_id, :fecha_nacimiento, :id_genero, :id_codigo_pais, :celular, :id_estado_civil, :direccion)', [
                 ':id_usuario' => $id,
                 ':id_tipo_documento' => $request->input('id_tipo_documento'),
                 ':numero_documento' => $request->input('numero_documento'),
                 ':nombres' => $request->input('nombres'),
                 ':apellidos' => $request->input('apellidos'),
                 ':email' => $request->input('email'),
+                ':password' => $hashedPassword,
                 ':rol_id' => $request->input('rol_id'),
                 ':fecha_nacimiento' => $request->input('fecha_nacimiento'),
                 ':id_genero' => $request->input('id_genero'),

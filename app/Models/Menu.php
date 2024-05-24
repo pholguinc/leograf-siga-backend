@@ -13,6 +13,13 @@ class Menu extends Model
         'updated_at' => false,
     ];
 
+    protected $fillable = [
+        'id',
+        'nombre',
+        'id_modulo',
+        'estado'
+    ];
+
 
     //Relación uno a  muchos inversa
     public function submenu(){
