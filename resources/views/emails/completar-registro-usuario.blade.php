@@ -130,7 +130,7 @@
                 confrmar su registro:</p>
             <br>
             <div class="button-group">
-                <a href="http://localhost:4200/auth/recuperar-contraseni" target="_blank""
+                <a href="http://localhost:4200/auth/registro" target="_blank""
                     class="btn top-fill">Confirmar registro</a>
             </div>
             <br>

@@ -71,12 +71,13 @@ class MenuController extends Controller
             $codigoPrefix = 'ME0';
             $nombreMenu = $request->input('nombre_menu');
             $moduloId = $request->input('id_modulo');
-            $statement = DB::connection()->getPdo()->prepare('SELECT last_value FROM menus_id_seq');
+            $statement = DB::connection()->getPdo()->prepare('SELECT nextval(\'menus_id_seq\')');
             $statement->execute();
             $idMenu = $statement->fetchColumn();
 
             $moduloAliasQuery = DB::table('modulos')->where('id', $moduloId)->select('alias')->first();
-            $moduloAlias = $moduloAliasQuery ? $moduloAliasQuery->alias : ''; // Handle potential null value
+            $moduloAlias = $moduloAliasQuery ? $moduloAliasQuery->alias : '';
+
 
 
             $codigoMenu = $moduloAlias . $moduloId. $codigoPrefix . $idMenu;

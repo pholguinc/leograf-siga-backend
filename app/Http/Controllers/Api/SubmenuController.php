@@ -136,7 +136,7 @@ class SubmenuController extends Controller
             $nombreSubMenu = $request->input('nombre_submenu');
             $menuId = $request->input('id_menu');
             $moduloId = $request->input('id_modulo');
-            $statement = DB::connection()->getPdo()->prepare('SELECT last_value FROM submenus_id_seq');
+            $statement = DB::connection()->getPdo()->prepare('SELECT nextval(\'submenus_id_seq\')');
             $statement->execute();
             $idSubMenu = $statement->fetchColumn();
 

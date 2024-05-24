@@ -77,10 +77,14 @@ class UsuariosController extends Controller
             $apellidos = $request->input('apellidos');
             $estadoUsuario = $request->input('estado');
 
-            $query = DB::select('SELECT * FROM listar_usuarios_grid_list(:offset, :limit, :id_tipo_documento);', [
+            $query = DB::select('SELECT * FROM listar_usuarios_grid_list(:offset, :limit, :id_tipo_documento,:numero_documento, :nombres, :apellidos, :estado);', [
                 'offset' => $offset,
                 'limit' => $limit,
                 'id_tipo_documento' => $id_tipo_documento,
+                'numero_documento' => $numeroDocumento,
+                'nombres' => $nombres,
+                'apellidos' => $apellidos,
+                'estado' => $estadoUsuario
             ]);
 
             $data = [

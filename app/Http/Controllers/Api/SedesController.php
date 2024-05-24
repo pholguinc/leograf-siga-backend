@@ -127,7 +127,7 @@ class SedesController extends Controller
 
             $codigoPrefix = 'SE0';
             $nombreSede = $request->input('nombre_sede');
-            $statement = DB::connection()->getPdo()->prepare('SELECT last_value FROM sedes_id_seq');
+            $statement = DB::connection()->getPdo()->prepare('SELECT nextval(\'sedes_id_seq\')');
             $statement->execute();
             $idSede = $statement->fetchColumn();
 
