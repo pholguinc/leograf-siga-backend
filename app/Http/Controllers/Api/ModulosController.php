@@ -120,7 +120,7 @@ class ModulosController extends Controller
      * )
      */
 
-    public function store(Request $request)
+    public function store(ModulosStoreRequest $request)
     {
         try {
             DB::beginTransaction();
@@ -131,8 +131,9 @@ class ModulosController extends Controller
             }
 
             $codigoPrefix = 'MO';
-            $nombreModulo = $request->input('nombre_modulo');
-            $image_url = $request->input('image_url');
+            $nombreModulo = $request->input('nombre');
+            $image_url = $request->input('imageurl');
+            $esatdoModulo = $request->input('estado');
             $statement = DB::connection()->getPdo()->prepare('SELECT nextval(\'modulos_id_seq\')');
             $statement->execute();
             $idModulo = $statement->fetchColumn();
@@ -142,12 +143,13 @@ class ModulosController extends Controller
 
 
 
-            $query = DB::connection()->getPdo()->prepare('SELECT * FROM modulos_list_create(:id_modulo,:codigo,:nombre,:alias, :image_url)');
+            $query = DB::connection()->getPdo()->prepare('SELECT * FROM modulos_list_create(:id_modulo,:codigo,:nombre,:alias, :image_url, :estado)');
             $query->bindParam(':id_modulo', $idModulo);
             $query->bindParam(':nombre', $nombreModulo);
             $query->bindParam(':codigo', $codigoModulo);
             $query->bindParam(':alias', $codigoPrefix);
             $query->bindParam(':image_url', $image_url);
+            $query->bindParam(':estado', $esatdoModulo);
 
             $sede = new Modulo();
 
@@ -247,7 +249,7 @@ class ModulosController extends Controller
      * )
      */
 
-    public function update(Request $request, $id)
+    public function update(ModulosUpdateRequest $request, $id)
     {
         try {
             DB::beginTransaction();
@@ -263,10 +265,11 @@ class ModulosController extends Controller
                 return $this->responseErrorJson('El registro no fue encontrado');
             }
 
-            $query = DB::select('SELECT modulos_list_update(:id_modulo, :nombre_modulo, :image_url)', [
+            $query = DB::select('SELECT modulos_list_update(:id_modulo, :nombre, :image_url, :estado)', [
                 ':id_modulo' => $id,
-                ':nombre_modulo' => $request->input('nombre_modulo'),
+                ':nombre' => $request->input('nombre'),
                 ':image_url' => $request->input('image_url'),
+                ':estado' => $request->input('estado'),
             ]);
 
             DB::commit();

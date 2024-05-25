@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('submenus', function (Blueprint $table) {
             $table->id();
             $table->string('codigo');
-            $table->string('submenu');
+            $table->string('nombre');
             $table->boolean('estado')->nullable(false)->default(0);
 
             //Llaves foráneas

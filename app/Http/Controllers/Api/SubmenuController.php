@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Submenu\SubmenuStoreRequest;
+use App\Http\Requests\Submenu\SubmenuUpdateRequest;
 use App\Models\Submenu;
 use App\Traits\ResponseTrait;
 use Exception;
@@ -133,7 +135,7 @@ class SubmenuController extends Controller
      * )
      */
 
-    public function store(Request $request)
+    public function store(SubmenuStoreRequest $request)
     {
         try {
             DB::beginTransaction();
@@ -144,9 +146,10 @@ class SubmenuController extends Controller
             }
 
             $codigoPrefix = 'SU0';
-            $nombreSubMenu = $request->input('nombre_submenu');
+            $nombreSubMenu = $request->input('nombre');
             $menuId = $request->input('id_menu');
             $moduloId = $request->input('id_modulo');
+            $moduloEstado = $request->input('estado');
             $statement = DB::connection()->getPdo()->prepare('SELECT nextval(\'submenus_id_seq\')');
             $statement->execute();
             $idSubMenu = $statement->fetchColumn();
@@ -161,12 +164,13 @@ class SubmenuController extends Controller
             $codigoSubMenu = $moduloAlias . $moduloId . $menuAlias . $menuId. $codigoPrefix . $idSubMenu;
 
 
-            $query = DB::connection()->getPdo()->prepare('SELECT * FROM submenus_list_create(:id_submenu,:codigo,:nombre, :id_menu, :id_modulo)');
+            $query = DB::connection()->getPdo()->prepare('SELECT * FROM submenus_list_create(:id_submenu,:codigo,:nombre, :id_menu, :id_modulo, :estado)');
             $query->bindParam(':id_submenu', $idSubMenu);
             $query->bindParam(':codigo', $codigoSubMenu);
             $query->bindParam(':nombre', $nombreSubMenu);
             $query->bindParam(':id_menu', $menuId);
             $query->bindParam(':id_modulo', $moduloId);
+            $query->bindParam(':estado', $moduloEstado);
 
             $submenu = new Submenu();
 
@@ -312,7 +316,7 @@ class SubmenuController extends Controller
      * )
      */
 
-    public function update(Request $request, $id)
+    public function update(SubmenuUpdateRequest $request, $id)
     {
         try {
             DB::beginTransaction();

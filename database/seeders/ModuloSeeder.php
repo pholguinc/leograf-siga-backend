@@ -16,7 +16,7 @@ class ModuloSeeder extends Seeder
         $permisosData = [
             [
                 'codigo' => 'MO01',
-                'modulo' => 'Seguridad',
+                'nombre' => 'Seguridad',
                 'alias' => 'MO',
                 'imageurl' => 'imagen.png',
                 'estado' => true,

@@ -127,7 +127,7 @@ class SedesController extends Controller
 
 
     //Función para crear un nuevo registro
-    public function store(Request $request)
+    public function store(SedesStoreRequest $request)
     {
         try {
             DB::beginTransaction();
@@ -138,7 +138,7 @@ class SedesController extends Controller
             }
 
             $codigoPrefix = 'SE0';
-            $nombreSede = $request->input('nombre_sede');
+            $nombreSede = $request->input('nombre');
             $statement = DB::connection()->getPdo()->prepare('SELECT nextval(\'sedes_id_seq\')');
             $statement->execute();
             $idSede = $statement->fetchColumn();
@@ -252,7 +252,7 @@ class SedesController extends Controller
      */
 
     //Función para actulizar registros
-    public function update(Request $request, $id)
+    public function update(SedesUpdateRequest $request, $id)
     {
         try {
             DB::beginTransaction();
@@ -269,9 +269,9 @@ class SedesController extends Controller
                 return $this->responseErrorJson('El registro no fue encontrado');
             }
 
-            $query = DB::select('SELECT sedes_list_update(:id_sede, :nombre_sede)', [
+            $query = DB::select('SELECT sedes_list_update(:id_sede, :nombre)', [
                 ':id_sede' => $id,
-                ':nombre_sede' => $request->input('nombre_sede'),
+                ':nombre' => $request->input('nombre'),
             ]);
 
             DB::commit();

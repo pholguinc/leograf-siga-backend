@@ -25,6 +25,7 @@ class ModulosUpdateRequest extends FormRequest
     {
         return [
             'nombre'            => 'required|min:3|unique:sedes',
+            'image_url'     => 'required',
             'estado'                => 'required'
         ];
     }
@@ -36,6 +37,7 @@ class ModulosUpdateRequest extends FormRequest
             'nombre.required'           => 'Ingrese un nombre valido.',
             'nombre.min'                => 'Ingrese un nombre que contenga más de 3 caracteres.',
             'nombre.unique'             => "El nombre ya se encuentra registrado.",
+            "image_url.required"        => 'La imagen es requerida',
             'estado.required'     =>       'El estado es requerido.'
         ];
     }

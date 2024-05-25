@@ -120,7 +120,7 @@ class RolController extends Controller
      * )
      */
 
-    public function store(Request $request)
+    public function store(RolStoreRequest $request)
     {
         try {
             DB::beginTransaction();
@@ -131,7 +131,8 @@ class RolController extends Controller
             }
 
             $codigoPrefix = 'RO0';
-            $nombreRol = $request->input('nombre_rol');
+            $nombreRol = $request->input('nombre');
+            $estadoRol = $request->input('estado');
             $statement = DB::connection()->getPdo()->prepare('SELECT nextval(\'roles_id_seq\')');
             $statement->execute();
             $idRol = $statement->fetchColumn();
@@ -139,10 +140,11 @@ class RolController extends Controller
             $codigoRol = $codigoPrefix . $idRol;
 
 
-            $query = DB::connection()->getPdo()->prepare('SELECT * FROM roles_list_create(:id_rol,:nombre,:codigo)');
+            $query = DB::connection()->getPdo()->prepare('SELECT * FROM roles_list_create(:id_rol,:nombre,:codigo, :estado )');
             $query->bindParam(':id_rol', $idRol);
             $query->bindParam(':nombre', $nombreRol);
             $query->bindParam(':codigo', $codigoRol);
+            $query->bindParam(':estado', $estadoRol);
 
 
             $rol = new Rol();
@@ -338,9 +340,10 @@ class RolController extends Controller
                 return $this->responseErrorJson('El registro no fue encontrado');
             }
 
-            $query = DB::select('SELECT roles_list_update(:id_rol, :nombre_rol)', [
+            $query = DB::select('SELECT roles_list_update(:id_rol, :nombre, :estado)', [
                 ':id_rol' => $id,
-                ':nombre_rol' => $request->input('nombre_rol'),
+                ':nombre' => $request->input('nombre'),
+                ':estado' => $request->input('estado'),
             ]);
 
             DB::commit();

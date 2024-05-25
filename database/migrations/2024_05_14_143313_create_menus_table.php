@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
             $table->string('codigo');
-            $table->string('menu');
+            $table->string('nombre');
             $table->string('alias');
             $table->boolean('estado')->nullable(false)->default(0);
            

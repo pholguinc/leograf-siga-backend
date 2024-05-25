@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('modulos', function (Blueprint $table) {
             $table->id();
             $table->string('codigo');
-            $table->string('modulo');
+            $table->string('nombre');
             $table->string('alias');
             $table->string('imageurl');
             $table->boolean('estado')->nullable(false)->default(0);

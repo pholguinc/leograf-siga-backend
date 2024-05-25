@@ -24,7 +24,7 @@ class RolStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'rol'            => 'required|min:3',
+            'nombre'            => 'required|min:3',
             'estado'                => 'required'
         ];
     }
@@ -33,9 +33,9 @@ class RolStoreRequest extends FormRequest
     public function messages()
     {
         return [
-            'rol.required'           => 'Ingrese un nombre valido.',
-            'rol.min'                => 'Ingrese un nombre que contenga más de 3 caracteres.',
-            'rol.unique'             => "El nombre ya se encuentra registrado.",
+            'nombre.required'           => 'Ingrese un nombre valido.',
+            'nombre.min'                => 'Ingrese un nombre que contenga más de 3 caracteres.',
+            'nombre.unique'             => "El nombre ya se encuentra registrado.",
             'estado.required'     =>    'El estado es requerido.'
         ];
     }

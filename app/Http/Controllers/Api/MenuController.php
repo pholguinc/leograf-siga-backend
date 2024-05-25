@@ -102,6 +102,7 @@ class MenuController extends Controller
             $codigoPrefix = 'ME0';
             $nombreMenu = $request->input('nombre');
             $moduloId = $request->input('id_modulo');
+            $estadoMenu = $request->input('estado');
             $statement = DB::connection()->getPdo()->prepare('SELECT nextval(\'menus_id_seq\')');
             $statement->execute();
             $idMenu = $statement->fetchColumn();
@@ -113,12 +114,13 @@ class MenuController extends Controller
             $codigoMenu = $moduloAlias . $moduloId . $codigoPrefix . $idMenu;
 
 
-            $query = DB::connection()->getPdo()->prepare('SELECT * FROM menus_list_create(:id_menu,:nombre,:codigo,:alias, :moduloId)');
+            $query = DB::connection()->getPdo()->prepare('SELECT * FROM menus_list_create(:id_menu,:nombre,:codigo,:alias, :moduloId, :estado)');
             $query->bindParam(':id_menu', $idMenu);
             $query->bindParam(':nombre', $nombreMenu);
             $query->bindParam(':codigo', $codigoMenu);
             $query->bindParam(':alias', $codigoPrefix);
             $query->bindParam(':moduloId', $moduloId);
+            $query->bindParam(':estado', $estadoMenu);
 
             $sede = new Menu();
 
