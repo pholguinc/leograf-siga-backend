@@ -31,9 +31,6 @@
                                     },
                                     "captcha": {
                                         "type": "string"
-                                    },
-                                    "confirm-captcha": {
-                                        "type": "string"
                                     }
                                 },
                                 "type": "object"
@@ -708,7 +705,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "post": {
                 "tags": [

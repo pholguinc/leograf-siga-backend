@@ -36,7 +36,6 @@ class AuthController extends Controller
      *              @OA\Property(property="email", type="string"),
      *              @OA\Property(property="password", type="string"),
      *              @OA\Property(property="captcha", type="string"),
-     *              @OA\Property(property="confirm-captcha", type="string"),
      *          ),
      *      ),
      *      @OA\Response(

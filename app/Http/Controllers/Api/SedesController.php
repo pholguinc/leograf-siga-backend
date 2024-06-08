@@ -21,12 +21,13 @@ class SedesController extends Controller
 {
     use ResponseTrait;
 
-/**
+    /**
      * Función para listar todas las sedes
      * @OA\Get (
      *     path="/api/sedes",
      *     tags={"Sedes"},
      *     operationId="listSedes",
+     *     security={{"bearerAuth": {}}},
      *     @OA\Response(
      *         response=200,
      *         description="Peticion realizada con exito",
